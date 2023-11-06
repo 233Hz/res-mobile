@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'iconfont'; /* Project id 4292218 */
+  src:
+    url('//at.alicdn.com/t/c/font_4292218_omaa7oozy2h.woff2?t=1698317453423') format('woff2'),
+    url('//at.alicdn.com/t/c/font_4292218_omaa7oozy2h.woff?t=1698317453423') format('woff'),
+    url('//at.alicdn.com/t/c/font_4292218_omaa7oozy2h.ttf?t=1698317453423') format('truetype'),
+    url('//at.alicdn.com/t/c/font_4292218_omaa7oozy2h.svg?t=1698317453423#iconfont') format('svg');
+}
+[class^='icon-'],
+[class*=' icon-'] {
+  font-family: 'iconfont' !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-up:before {
+  content: '\e77f';
+}
+.icon-arrow-right:before {
+  content: '\e668';
+}
+.icon-arrow-left:before {
+  content: '\e669';
+}
+.icon-arrow-down:before {
+  content: '\e60f';
+}
+.icon-view:before {
+  content: '\e628';
+}
+.icon-search:before {
+  content: '\e693';
+}
+.icon-download:before {
+  content: '\e6c1';
+}
+.icon-navbar:before {
+  content: '\e641';
+}
+.icon-message:before {
+  content: '\e658';
+}
+.icon-weixin:before {
+  content: '\e62c';
+}
+.icon-user:before {
+  content: '\e64a';
+}
+.icon-upload:before {
+  content: '\e60c';
+}
+.icon-time:before {
+  content: '\e600';
+}

@@ -1,0 +1,198 @@
+{
+  // 组件自动导入
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue",
+      "^Gl(.*)": "@/components/Gl$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "name": "home",
+      "style": {
+        "navigationStyle": "custom"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/resources/resources",
+      "name": "recCenter",
+      "style": {
+        "navigationBarTitleText": "资源中心"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/notify/notify",
+      "name": "notify",
+      "style": {
+        "navigationBarTitleText": "通知公告"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/notify/details",
+      "name": "notifyDetails",
+      "style": {
+        "navigationBarTitleText": "通知详情"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/my/my",
+      "name": "my",
+      "style": {
+        "navigationBarTitleText": "我的"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "name": "login",
+      "style": {
+        "navigationStyle": "custom"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#4fb869",
+    "backgroundColor": "#ffffff",
+    "fontSize": "14px",
+    "iconWidth": "20px",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/tabs/home.png",
+        "selectedIconPath": "static/tabs/home-active.png"
+      },
+      {
+        "pagePath": "pages/resources/resources",
+        "text": "资源中心",
+        "iconPath": "static/tabs/resources.png",
+        "selectedIconPath": "static/tabs/resources-active.png"
+      },
+      {
+        "pagePath": "pages/notify/notify",
+        "text": "通知公告",
+        "iconPath": "static/tabs/notify.png",
+        "selectedIconPath": "static/tabs/notify-active.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "static/tabs/my.png",
+        "selectedIconPath": "static/tabs/my-active.png"
+      }
+    ]
+  },
+  "subPackages": [
+    {
+      "root": "resources",
+      "pages": [
+        {
+          "path": "management/management",
+          "name": "resManagement",
+          "style": {
+            "navigationBarTitleText": "资源管理"
+          }
+        },
+        {
+          "path": "list/list",
+          "name": "resList",
+          "style": {
+            "navigationBarTitleText": "资源列表"
+          }
+        },
+        {
+          "path": "audit/audit",
+          "name": "resAudit",
+          "style": {
+            "navigationBarTitleText": "资源审核"
+          }
+        },
+        {
+          "path": "upload/upload",
+          "name": "resUpload",
+          "style": {
+            "navigationBarTitleText": "资源上传"
+          }
+        },
+        {
+          "path": "preview/preview",
+          "name": "resPreview",
+          "style": {
+            "navigationBarTitleText": "资源预览"
+          }
+        }
+      ]
+    },
+    {
+      "root": "my",
+      "pages": [
+        {
+          "path": "profile/profile",
+          "name": "profile",
+          "style": {
+            "navigationBarTitleText": "基本信息"
+          }
+        },
+        {
+          "path": "set-password/set-password",
+          "name": "setPassword",
+          "style": {
+            "navigationBarTitleText": "修改密码"
+          }
+        },
+        {
+          "path": "download/download",
+          "name": "downloadRecord",
+          "style": {
+            "navigationBarTitleText": "下载记录"
+          }
+        },
+        {
+          "path": "collect/collect",
+          "name": "collectRecord",
+          "style": {
+            "navigationBarTitleText": "我的收藏"
+          }
+        },
+        {
+          "path": "demand/demand",
+          "name": "demand",
+          "style": {
+            "navigationBarTitleText": "发布需求"
+          }
+        }
+      ]
+    }
+  ],
+  // 分包预下载规则
+  "preloadRule": {
+    "pages/my/my": {
+      "network": "all",
+      "packages": ["my"]
+    }
+  }
+}

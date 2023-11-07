@@ -16,6 +16,7 @@ const searchValue = ref('')
         <input class="search-input" v-model="searchValue" placeholder="关键词搜索" />
       </view>
       <image
+        v-permission="'admin'"
         class="image"
         src="@/static/images/backstage.png"
         mode="scaleToFill"

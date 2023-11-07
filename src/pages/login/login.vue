@@ -1,47 +1,46 @@
 <script setup lang="ts">
+import { useUserStore } from '@/store'
+import { useRouter } from 'uni-mini-router'
 const { safeAreaInsets } = uni.getSystemInfoSync()
+
+const userStore = useUserStore()
+const router = useRouter()
+
+const loginHandler = () => {
+  userStore.setToken(new Date().getTime().toString())
+  router.pushTab({ name: 'home' })
+}
 </script>
 
 <template>
-  <view class="viewport" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
-    <image class="image" src="https://picsum.photos/390/844" mode="scaleToFill" />
-    <view class="image-mask">
-      <view class="content">
-        <view class="logo">产教融和双创数字服务平台</view>
-        <view class="form">
-          <view class="form-input">
-            <input
-              type="text"
-              placeholder="请输入用户名"
-              placeholder-style="color: rgba(255,255,255,0.5)"
-            />
-          </view>
-          <view class="form-input">
-            <input
-              type="text"
-              placeholder="请输入密码"
-              placeholder-style="color: rgba(255,255,255,0.5)"
-            />
-          </view>
-          <button class="form-button">登入</button>
-          <view class="divider">
-            <div class="left-line"></div>
-            <div class="divider-text">其他登录方式</div>
-            <div class="right-line"></div>
-          </view>
-          <view class="others">
-            <view class="item">
-              <view class="icon">
-                <text class="icon-weixin" />
-              </view>
-            </view>
-          </view>
-        </view>
+  <view class="container" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
+    <view class="logo">产教融和双创数字服务平台</view>
+    <view class="form">
+      <view class="form__item">
+        <input
+          class="form__item_input"
+          type="text"
+          placeholder="用户名"
+          placeholder-style="color: #ccc"
+        />
       </view>
+      <view class="form__item">
+        <input
+          class="form__item_input"
+          type="safe-password"
+          placeholder="密码"
+          placeholder-style="color: #ccc"
+        />
+      </view>
+      <button class="form__button" @tap="loginHandler">登录</button>
     </view>
+    <!-- <view class="divider">
+      <div class="left-line"></div>
+      <div class="divider-text">其他登录方式</div>
+      <div class="right-line"></div>
+    </view> -->
   </view>
 </template>
-
 <style>
 page {
   height: 100%;
@@ -50,95 +49,54 @@ page {
 </style>
 
 <style scoped lang="scss">
-.viewport {
+.container {
   height: 100%;
   position: relative;
+  padding: 40rpx;
 
-  .image {
-    width: 100%;
-    height: 100%;
+  .logo {
+    text-align: center;
+    color: #4fb869;
+    font-weight: bold;
+    font-size: 48rpx;
+    margin-top: 200rpx;
   }
 
-  .image-mask {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+  .form {
+    margin-top: 200rpx;
     display: flex;
+    flex-direction: column;
+    gap: 40rpx;
 
-    .content {
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .logo {
-        text-align: center;
-        color: #fff;
-        font-weight: bold;
-        font-size: 48rpx;
-        height: 96rpx;
-        line-height: 96rpx;
+    &__item {
+      &_input {
+        height: 100rpx;
+        line-height: 100rpx;
+        border-bottom: #ccc 1px solid;
       }
+    }
 
-      .form {
-        width: 500rpx;
+    &__button {
+      width: 100%;
+      background-color: #4fb869;
+      color: #fff;
+    }
+  }
 
-        &-input {
-          padding: 20rpx 40rpx;
-          border-radius: 20px;
-          margin: 20rpx 0;
-          background-color: rgba(0, 0, 0, 0.2);
-          color: #fff;
-          border: #ddd solid 1px;
+  .divider {
+    display: flex;
+    align-items: center;
 
-          &::placeholder {
-            color: #fff;
-          }
-        }
-        &-button {
-          background-color: #30a89d;
-          color: #fff;
-        }
-      }
+    .left-line,
+    .right-line {
+      flex: 1;
+      height: 1px;
+      background-color: #ccc;
+    }
 
-      .divider {
-        display: flex;
-        align-items: center;
-
-        .left-line,
-        .right-line {
-          flex: 1;
-          height: 1px;
-          background-color: #ffffff99;
-        }
-
-        .divider-text {
-          padding: 0 20rpx;
-          color: #ffffff99;
-        }
-      }
-
-      .others {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .item {
-          .icon {
-            width: 80rpx;
-            height: 80rpx;
-            border-radius: 50%;
-            padding: 10rpx;
-            border: 2px solid #b2b2b2;
-            display: flex;
-
-            .icon-weixin {
-            }
-          }
-        }
-      }
+    .divider-text {
+      padding: 0 20rpx;
+      color: #212121;
     }
   }
 }

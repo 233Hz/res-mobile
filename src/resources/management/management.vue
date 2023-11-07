@@ -2,22 +2,19 @@
 import { useRouter } from 'uni-mini-router'
 
 const router = useRouter()
-const { safeAreaInsets } = uni.getSystemInfoSync()
 </script>
 
 <template>
-  <view :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
-    <view class="list">
-      <view class="list__group">
-        <view class="list__group__item" @tap="() => router.push({ name: 'resList' })">
-          资源列表
-        </view>
-        <view class="list__group__item" @tap="() => router.push({ name: 'resAudit' })">
-          资源审核
-        </view>
-        <view class="list__group__item" @tap="() => router.push({ name: 'resUpload' })">
-          上传资源
-        </view>
+  <view class="list">
+    <view class="list__group">
+      <view class="list__group__item" @tap="() => router.push({ name: 'resList' })">
+        资源列表
+      </view>
+      <view class="list__group__item" @tap="() => router.push({ name: 'resAudit' })">
+        资源审核
+      </view>
+      <view class="list__group__item" @tap="() => router.push({ name: 'resUpload' })">
+        上传资源
       </view>
     </view>
   </view>

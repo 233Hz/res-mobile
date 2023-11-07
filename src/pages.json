@@ -15,7 +15,7 @@
         "navigationStyle": "custom"
       },
       "meta": {
-        "ignoreAuth": true
+        "ignoreAuth": false
       }
     },
     {
@@ -25,7 +25,7 @@
         "navigationBarTitleText": "资源中心"
       },
       "meta": {
-        "ignoreAuth": true
+        "ignoreAuth": false
       }
     },
     {
@@ -35,7 +35,7 @@
         "navigationBarTitleText": "通知公告"
       },
       "meta": {
-        "ignoreAuth": true
+        "ignoreAuth": false
       }
     },
     {
@@ -45,7 +45,7 @@
         "navigationBarTitleText": "通知详情"
       },
       "meta": {
-        "ignoreAuth": true
+        "ignoreAuth": false
       }
     },
     {
@@ -55,7 +55,7 @@
         "navigationBarTitleText": "我的"
       },
       "meta": {
-        "ignoreAuth": true
+        "ignoreAuth": false
       }
     },
     {
@@ -63,6 +63,16 @@
       "name": "login",
       "style": {
         "navigationStyle": "custom"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/404/404",
+      "name": "404",
+      "style": {
+        "navigationBarTitleText": "404"
       },
       "meta": {
         "ignoreAuth": true
@@ -115,6 +125,10 @@
           "name": "resManagement",
           "style": {
             "navigationBarTitleText": "资源管理"
+          },
+          "meta": {
+            "ignoreAuth": false,
+            "roles": ["admin"]
           }
         },
         {
@@ -122,6 +136,10 @@
           "name": "resList",
           "style": {
             "navigationBarTitleText": "资源列表"
+          },
+          "meta": {
+            "ignoreAuth": false,
+            "roles": ["admin"]
           }
         },
         {
@@ -129,6 +147,10 @@
           "name": "resAudit",
           "style": {
             "navigationBarTitleText": "资源审核"
+          },
+          "meta": {
+            "ignoreAuth": false,
+            "roles": ["admin"]
           }
         },
         {
@@ -136,6 +158,10 @@
           "name": "resUpload",
           "style": {
             "navigationBarTitleText": "资源上传"
+          },
+          "meta": {
+            "ignoreAuth": false,
+            "roles": ["admin"]
           }
         },
         {
@@ -155,6 +181,9 @@
           "name": "profile",
           "style": {
             "navigationBarTitleText": "基本信息"
+          },
+          "meta": {
+            "ignoreAuth": false
           }
         },
         {
@@ -162,6 +191,9 @@
           "name": "setPassword",
           "style": {
             "navigationBarTitleText": "修改密码"
+          },
+          "meta": {
+            "ignoreAuth": false
           }
         },
         {
@@ -169,6 +201,9 @@
           "name": "downloadRecord",
           "style": {
             "navigationBarTitleText": "下载记录"
+          },
+          "meta": {
+            "ignoreAuth": false
           }
         },
         {
@@ -176,6 +211,9 @@
           "name": "collectRecord",
           "style": {
             "navigationBarTitleText": "我的收藏"
+          },
+          "meta": {
+            "ignoreAuth": false
           }
         },
         {
@@ -183,6 +221,9 @@
           "name": "demand",
           "style": {
             "navigationBarTitleText": "发布需求"
+          },
+          "meta": {
+            "ignoreAuth": false
           }
         }
       ]

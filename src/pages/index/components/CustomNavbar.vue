@@ -9,11 +9,18 @@ const searchValue = ref('')
 </script>
 
 <template>
-  <view :style="{ paddingTop: safeAreaInsets?.top + 'px' }" style="background-color: #fff">
+  <view
+    :style="{ paddingTop: safeAreaInsets?.top + 'px' }"
+    style="background-color: #fff"
+  >
     <view class="navbar">
       <view class="search">
         <text class="icon-search" />
-        <input class="search-input" v-model="searchValue" placeholder="关键词搜索" />
+        <input
+          class="search-input"
+          v-model="searchValue"
+          placeholder="关键词搜索"
+        />
       </view>
       <image
         v-permission="'admin'"

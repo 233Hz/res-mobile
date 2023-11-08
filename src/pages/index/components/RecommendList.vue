@@ -12,7 +12,11 @@ const router = useRouter()
       :key="item"
       @tap="router.push({ path: '/resources/preview/preview' })"
     >
-      <image src="https://picsum.photos/200" mode="scaleToFill" class="list__item__image" />
+      <image
+        src="https://picsum.photos/200"
+        mode="scaleToFill"
+        class="list__item__image"
+      />
       <view class="list__item__content">
         <view class="list__item__content__title">
           <text class="list__item__content__title__tag">pdf</text>

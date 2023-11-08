@@ -20,7 +20,9 @@ const router = useRouter()
           hover-class="none"
         />
         <view class="item-right">
-          <view class="title truncate">关于开展2023年上海市女大学生创新创业大赛的通知</view>
+          <view class="title truncate"
+            >关于开展2023年上海市女大学生创新创业大赛的通知</view
+          >
           <view class="info">
             <view class="info-left">
               <text class="issuer">POHO运营</text>

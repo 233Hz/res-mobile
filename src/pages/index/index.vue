@@ -38,6 +38,8 @@ const tabChangeHandler = (index: number) => {
 }
 
 const tabFilterClickHandler = (index: number) => {
+  console.log(index)
+
   filterRef.value?.open()
 }
 

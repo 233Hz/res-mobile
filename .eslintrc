@@ -1,0 +1,48 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  // 小程序全局变量
+  "globals": {
+    "uni": true,
+    "wx": true,
+    "WechatMiniprogram": true,
+    "getCurrentPages": true,
+    "getApp": true,
+    "UniApp": true,
+    "UniHelper": true,
+    "App": true,
+    "Page": true,
+    "Component": true,
+    "AnyObject": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/vue3-essential",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "parser": "@typescript-eslint/parser",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "vue"],
+  "rules": {
+    "vue/no-multiple-template-root": "off",
+    "vue/multi-word-component-names": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "vue/no-v-text-v-html-on-component": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "none" // 禁止末尾逗号
+      }
+    ]
+  }
+}

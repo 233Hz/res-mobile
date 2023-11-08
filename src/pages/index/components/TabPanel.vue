@@ -35,7 +35,11 @@ const emit = defineEmits<{
       </text>
     </view>
     <view class="container__right">
-      <text v-show="activeIndex === 0" class="icon-navbar" @tap="filterClickHandler(activeIndex)" />
+      <text
+        v-show="activeIndex === 0"
+        class="icon-navbar"
+        @tap="filterClickHandler(activeIndex)"
+      />
     </view>
   </view>
 </template>

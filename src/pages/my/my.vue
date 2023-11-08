@@ -34,23 +34,39 @@ const logout = () => {
   <view :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
     <view class="list">
       <view class="list__group">
-        <view class="list__group__item" @tap="() => router.push({ name: 'profile' })"
+        <view
+          class="list__group__item"
+          @tap="() => router.push({ name: 'profile' })"
           >我的资料</view
         >
-        <view class="list__group__item" @tap="() => router.push({ name: 'setPassword' })"
+        <view
+          class="list__group__item"
+          @tap="() => router.push({ name: 'setPassword' })"
           >修改密码</view
         >
-        <view class="list__group__item" @tap="() => router.push({ name: 'downloadRecord' })"
+        <view
+          class="list__group__item"
+          @tap="() => router.push({ name: 'downloadRecord' })"
           >下载记录</view
         >
-        <view class="list__group__item" @tap="() => router.push({ name: 'collectRecord' })"
+        <view
+          class="list__group__item"
+          @tap="() => router.push({ name: 'collectRecord' })"
           >我的收藏</view
         >
-        <view class="list__group__item" @tap="() => router.push({ name: 'demand' })">资源需求</view>
+        <view
+          class="list__group__item"
+          @tap="() => router.push({ name: 'demand' })"
+          >资源需求</view
+        >
       </view>
       <view class="list__group">
-        <view class="list__group__item" @tap="addAdminRole">添加管理员权限</view>
-        <view class="list__group__item" @tap="removeAdminRole">移除管理员权限</view>
+        <view class="list__group__item" @tap="addAdminRole"
+          >添加管理员权限</view
+        >
+        <view class="list__group__item" @tap="removeAdminRole"
+          >移除管理员权限</view
+        >
       </view>
       <view class="list__group">
         <view class="list__group__item" @tap="logout">退出登入</view>

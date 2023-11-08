@@ -12,7 +12,9 @@ const categorys = [
   <view class="tab">
     <view class="tab__title">资源栏目</view>
     <scroll-view scroll-x class="tab__scroll hidden-scroll">
-      <text class="tab__scroll__item" v-for="item in categorys" :key="item"> {{ item }} </text>
+      <text class="tab__scroll__item" v-for="item in categorys" :key="item">
+        {{ item }}
+      </text>
     </scroll-view>
   </view>
 </template>

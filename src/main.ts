@@ -6,6 +6,7 @@ import globalDirective from './directives'
 import './permission'
 import './style/index.scss'
 import './style/font.scss'
+
 export function createApp() {
   const app = createSSRApp(App)
   app.use(pinia)

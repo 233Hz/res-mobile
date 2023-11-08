@@ -68,7 +68,11 @@ page {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, transparent 70%, rgba(0, 0, 0, 0.5) 100%);
+            background: linear-gradient(
+              180deg,
+              transparent 70%,
+              rgba(0, 0, 0, 0.5) 100%
+            );
             z-index: 20;
           }
 

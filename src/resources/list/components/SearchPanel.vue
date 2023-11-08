@@ -17,7 +17,12 @@ const tags = ['全部', '待审核', '审核中', '已下架', '未通过', '已
     <view class="search-input">
       <view class="search-input__left">
         <label class="icon-search" />
-        <input prefixIcon="search" :model="search.name" placeholder="搜索资源名称" class="input" />
+        <input
+          prefixIcon="search"
+          :model="search.name"
+          placeholder="搜索资源名称"
+          class="input"
+        />
       </view>
       <text class="icon-upload" @tap="router.push({ name: 'resUpload' })" />
     </view>

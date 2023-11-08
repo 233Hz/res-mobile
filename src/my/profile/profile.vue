@@ -16,7 +16,12 @@ const profile = ref<any>({
       <view class="form-item">
         <text class="label">姓名</text>
         <view class="content">
-          <input class="input" type="text" placeholder="请输入姓名" :value="profile.username" />
+          <input
+            class="input"
+            type="text"
+            placeholder="请输入姓名"
+            :value="profile.username"
+          />
         </view>
       </view>
       <view class="form-item">
@@ -24,10 +29,18 @@ const profile = ref<any>({
         <view class="content">
           <radio-group>
             <label class="radio"
-              ><radio value="1" :checked="profile.gender === 1" color="#007aff" />男</label
+              ><radio
+                value="1"
+                :checked="profile.gender === 1"
+                color="#007aff"
+              />男</label
             >
             <label class="radio"
-              ><radio value="2" :checked="profile.gender === 2" color="#007aff" />女</label
+              ><radio
+                value="2"
+                :checked="profile.gender === 2"
+                color="#007aff"
+              />女</label
             >
           </radio-group>
         </view>
@@ -35,19 +48,34 @@ const profile = ref<any>({
       <view class="form-item">
         <text class="label">手机号码</text>
         <view class="content">
-          <input class="input" type="text" placeholder="请输入手机号码" :value="profile.phone" />
+          <input
+            class="input"
+            type="text"
+            placeholder="请输入手机号码"
+            :value="profile.phone"
+          />
         </view>
       </view>
       <view class="form-item">
         <text class="label">身份证号</text>
         <view class="content">
-          <input class="input" type="text" placeholder="请输入身份证号" :value="profile.idCard" />
+          <input
+            class="input"
+            type="text"
+            placeholder="请输入身份证号"
+            :value="profile.idCard"
+          />
         </view>
       </view>
       <view class="form-item">
         <text class="label">联系地址</text>
         <view class="content">
-          <input class="input" type="text" placeholder="请输入联系地址" :value="profile.address" />
+          <input
+            class="input"
+            type="text"
+            placeholder="请输入联系地址"
+            :value="profile.address"
+          />
         </view>
       </view>
     </view>

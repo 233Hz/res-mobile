@@ -10,7 +10,12 @@ const search = ref({
   <view class="search">
     <view class="search-input">
       <label class="icon-search" />
-      <input prefixIcon="search" :model="search.name" placeholder="搜索资源名称" class="input" />
+      <input
+        prefixIcon="search"
+        :model="search.name"
+        placeholder="搜索资源名称"
+        class="input"
+      />
     </view>
   </view>
 </template>

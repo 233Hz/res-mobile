@@ -43,8 +43,16 @@ const formats = [
     <view class="tab__title">资源分类</view>
     <scroll-view scroll-x class="tab__scroll hidden-scroll">
       <view class="tab__scroll__wrap">
-        <view class="tab__scroll__wrap__item" v-for="item in formats" :key="item.id">
-          <image :src="item.iconUrl" mode="scaleToFill" class="tab__scroll__wrap__item__image" />
+        <view
+          class="tab__scroll__wrap__item"
+          v-for="item in formats"
+          :key="item.id"
+        >
+          <image
+            :src="item.iconUrl"
+            mode="scaleToFill"
+            class="tab__scroll__wrap__item__image"
+          />
           <text class="tab__scroll__wrap__item__text">{{ item.format }}</text>
         </view>
       </view>

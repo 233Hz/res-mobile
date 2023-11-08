@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import * as dictData from './const'
 
-const formRef = ref()
 const formData = ref<any>({
   name: void 0,
   category: void 0,
@@ -42,7 +41,12 @@ const allowDownloadListChangeHandler: UniHelper.PickerViewOnChange = (e) => {
       <view class="form-item">
         <text class="label">资源名称</text>
         <view class="content">
-          <input class="input" type="text" placeholder="请输入资源名称" :value="formData.name" />
+          <input
+            class="input"
+            type="text"
+            placeholder="请输入资源名称"
+            :value="formData.name"
+          />
         </view>
       </view>
       <view class="form-item">
@@ -96,7 +100,12 @@ const allowDownloadListChangeHandler: UniHelper.PickerViewOnChange = (e) => {
       <view class="form-item">
         <text class="label">所属栏目</text>
         <view class="content">
-          <picker mode="multiSelector" :value="0" :range="dictData.columnList" range-key="label">
+          <picker
+            mode="multiSelector"
+            :value="0"
+            :range="dictData.columnList"
+            range-key="label"
+          >
             <text class="placeholder">请选择所属栏目</text>
           </picker>
         </view>

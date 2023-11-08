@@ -7,13 +7,22 @@ const router = useRouter()
 <template>
   <view class="list">
     <view class="list__group">
-      <view class="list__group__item" @tap="() => router.push({ name: 'resList' })">
+      <view
+        class="list__group__item"
+        @tap="() => router.push({ name: 'resList' })"
+      >
         资源列表
       </view>
-      <view class="list__group__item" @tap="() => router.push({ name: 'resAudit' })">
+      <view
+        class="list__group__item"
+        @tap="() => router.push({ name: 'resAudit' })"
+      >
         资源审核
       </view>
-      <view class="list__group__item" @tap="() => router.push({ name: 'resUpload' })">
+      <view
+        class="list__group__item"
+        @tap="() => router.push({ name: 'resUpload' })"
+      >
         上传资源
       </view>
     </view>

@@ -1,13 +1,35 @@
 <script setup lang="ts">
-import SearchPanel from './components/SearchPanel.vue'
-import ResourcesList from './components/ResourcesList.vue'
+import { useResourceList } from './hooks'
+import Search from './search.vue'
+import ResourcesList from '@/components/resource/ResourcesList.vue'
+
+const {
+  loading,
+  dataList,
+  handleSearch,
+  handleEdit,
+  handleDelete,
+  handleRevoke,
+  handleScrollToLower
+} = useResourceList()
 </script>
 
 <template>
   <view class="viewport">
-    <SearchPanel />
-    <scroll-view scroll-y class="scroll-view">
-      <ResourcesList />
+    <Search @on-search="handleSearch" />
+    <scroll-view
+      scroll-y
+      class="scroll-view"
+      @scrolltolower="handleScrollToLower"
+    >
+      <GlEmpty v-show="!dataList.length" text="没有符合条件的资源" />
+      <ResourcesList
+        :list="dataList"
+        @on-update="handleEdit"
+        @on-delete="handleDelete"
+        @on-revoke="handleRevoke"
+      />
+      <view class="loading" v-show="loading">加载中...</view>
     </scroll-view>
   </view>
 </template>
@@ -28,6 +50,14 @@ page {
   .scroll-view {
     flex: 1;
     overflow: hidden;
+
+    .loading,
+    .no-more {
+      height: 60rpx;
+      line-height: 60rpx;
+      width: 100%;
+      text-align: center;
+    }
   }
 }
 </style>

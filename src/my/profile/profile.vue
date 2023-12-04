@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useProfile } from './hooks'
 
-const profile = ref<any>({
-  username: '张三',
-  gender: 1,
-  phone: '13800000000',
-  idCard: '320101199001010000',
-  address: '喜马拉雅'
-})
+const { form, handleGenderChange, onSubmit } = useProfile()
 </script>
 
 <template>
   <view class="form">
     <view class="form-content">
+      <view class="form-item">
+        <text class="label">登录账号</text>
+        <view class="content">
+          <input
+            disabled
+            class="input"
+            type="text"
+            placeholder="请输入登入账号"
+            :value="form.loginName"
+          />
+        </view>
+      </view>
       <view class="form-item">
         <text class="label">姓名</text>
         <view class="content">
@@ -20,28 +26,22 @@ const profile = ref<any>({
             class="input"
             type="text"
             placeholder="请输入姓名"
-            :value="profile.username"
+            v-model="form.userName"
           />
         </view>
       </view>
       <view class="form-item">
         <text class="label">性别</text>
         <view class="content">
-          <radio-group>
-            <label class="radio"
-              ><radio
-                value="1"
-                :checked="profile.gender === 1"
-                color="#007aff"
-              />男</label
-            >
-            <label class="radio"
-              ><radio
-                value="2"
-                :checked="profile.gender === 2"
-                color="#007aff"
-              />女</label
-            >
+          <radio-group @change="handleGenderChange">
+            <label class="radio">
+              <radio value="1" :checked="form.sex === 1" color="#007aff" />
+              男
+            </label>
+            <label class="radio">
+              <radio value="2" :checked="form.sex === 2" color="#007aff" />
+              女
+            </label>
           </radio-group>
         </view>
       </view>
@@ -52,7 +52,18 @@ const profile = ref<any>({
             class="input"
             type="text"
             placeholder="请输入手机号码"
-            :value="profile.phone"
+            v-model="form.mobile"
+          />
+        </view>
+      </view>
+      <view class="form-item">
+        <text class="label">电子邮箱</text>
+        <view class="content">
+          <input
+            class="input"
+            type="text"
+            placeholder="请输入电子邮箱"
+            v-model="form.email"
           />
         </view>
       </view>
@@ -63,7 +74,7 @@ const profile = ref<any>({
             class="input"
             type="text"
             placeholder="请输入身份证号"
-            :value="profile.idCard"
+            v-model="form.idCard"
           />
         </view>
       </view>
@@ -74,18 +85,19 @@ const profile = ref<any>({
             class="input"
             type="text"
             placeholder="请输入联系地址"
-            :value="profile.address"
+            v-model="form.address"
           />
         </view>
       </view>
     </view>
-    <button class="form-button">确认修改</button>
+    <button class="form-button" @tap="onSubmit">确认修改</button>
   </view>
 </template>
 
 <style scoped lang="scss">
 .form {
   padding: 20rpx;
+  position: relative;
 
   .form-content {
     background-color: #fff;

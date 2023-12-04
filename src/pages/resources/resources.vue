@@ -1,34 +1,52 @@
 <script setup lang="ts">
+import { useResources } from './hooks'
+import CustomNavbar from './components/CustomNavbar.vue'
 import IndexPanel from './components/IndexPanel.vue'
+
+const {
+  loading,
+  searchForm,
+  resourceList,
+  handleInputSearch,
+  handleScrollToLower
+} = useResources()
 </script>
 
 <template>
   <view class="viewport">
-    <scroll-view scroll-y class="scroll-view">
-      <IndexPanel />
+    <!-- 导航栏 -->
+    <CustomNavbar @search="handleInputSearch" />
+    <scroll-view
+      scroll-y
+      class="scroll-view"
+      @scrolltolower="handleScrollToLower"
+    >
+      <IndexPanel v-model="searchForm" />
+      <GlEmpty v-show="!resourceList.length" text="没有符合条件的资源" />
       <view class="content">
-        <view class="item" v-for="item in 30" :key="item">
-          <navigator url="/resources/preview/preview" hover-class="none">
+        <view class="item" v-for="item in resourceList" :key="item.oid">
+          <navigator
+            :url="`/resources/preview/preview?id=${item.oid}`"
+            hover-class="none"
+          >
             <view class="cover">
-              <image
-                :src="`https://picsum.photos/400/400/?${item}`"
-                mode="scaleToFill"
-                class="image"
-              />
-              <text class="icon-view">200</text>
+              <image :src="item.resCover" mode="scaleToFill" class="image" />
+              <text class="icon-view">
+                <span>{{ item.viewNum }}</span>
+              </text>
             </view>
-            <view class="title truncate">纸片式矮凳—计划书.pdf</view>
+            <view class="title truncate">{{ item.resName }}</view>
             <view class="info">
-              <view class="time truncate"> 2023-01-01</view>
+              <view class="time truncate"> {{ item.createTime }}</view>
               <view class="icon-collect" />
             </view>
           </navigator>
         </view>
       </view>
+      <view class="loading" v-show="loading">加载中...</view>
     </scroll-view>
   </view>
 </template>
-
 <style>
 page {
   height: 100%;
@@ -41,6 +59,7 @@ page {
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #fff;
 
   .scroll-view {
     flex: 1;
@@ -117,6 +136,13 @@ page {
           }
         }
       }
+    }
+    .loading,
+    .no-more {
+      height: 60rpx;
+      line-height: 60rpx;
+      width: 100%;
+      text-align: center;
     }
   }
 }

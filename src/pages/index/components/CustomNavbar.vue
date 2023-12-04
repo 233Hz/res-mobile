@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useResourceStoreHook } from '@/store/modules/resource'
 import { useRouter } from 'uni-mini-router'
-
-const router = useRouter()
+import { ref } from 'vue'
 
 const { safeAreaInsets } = uni.getSystemInfoSync()
 const searchValue = ref('')
+
+const router = useRouter()
+const handleSearch = () => {
+  useResourceStoreHook().SET_QUERY({ name: searchValue.value })
+  router.pushTab({ name: 'recCenter' })
+  searchValue.value = ''
+}
 </script>
 
 <template>
@@ -14,21 +20,31 @@ const searchValue = ref('')
     style="background-color: #fff"
   >
     <view class="navbar">
-      <view class="search">
-        <text class="icon-search" />
+      <view class="navbar__backed">
+        <navigator
+          url="/resources/management/management"
+          hover-class="none"
+          class="navigator"
+        >
+          <image
+            class="image"
+            v-permission="'admin'"
+            src="@/static/images/backstage.png"
+            mode="scaleToFill"
+          />
+        </navigator>
+      </view>
+      <view class="navbar__input">
+        <text class="input-icon icon-search" />
         <input
           class="search-input"
           v-model="searchValue"
           placeholder="关键词搜索"
         />
       </view>
-      <image
-        v-permission="'admin'"
-        class="image"
-        src="@/static/images/backstage.png"
-        mode="scaleToFill"
-        @tap="router.push({ name: 'resManagement' })"
-      />
+      <view class="navbar__button" @tap="handleSearch">
+        <text class="text">搜索</text>
+      </view>
     </view>
   </view>
 </template>
@@ -40,11 +56,26 @@ const searchValue = ref('')
   align-items: center;
   gap: 20rpx;
 
-  .search {
+  &__backed {
+    width: 64rpx;
+    height: 64rpx;
+
+    .navigator {
+      width: 100%;
+      height: 100%;
+
+      .image {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  &__input {
     flex: 1;
     position: relative;
 
-    .icon-search {
+    .input-icon {
       position: absolute;
       top: 0;
       left: 30rpx;
@@ -61,9 +92,14 @@ const searchValue = ref('')
     }
   }
 
-  .image {
-    width: 64rpx;
-    height: 64rpx;
+  &__button {
+    padding-right: 20rpx;
+
+    .text {
+      font-size: 32rpx;
+      font-weight: 400;
+      color: #909399;
+    }
   }
 }
 </style>

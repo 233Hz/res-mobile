@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useSetPassword } from './hooks'
 
-const profile = ref<any>({
-  password1: void 0,
-  password2: void 0,
-  password3: void 0
-})
+const { form, onSubmit } = useSetPassword()
 </script>
 
 <template>
@@ -18,7 +14,8 @@ const profile = ref<any>({
             class="input"
             type="safe-password"
             placeholder="请输入当前密码"
-            :value="profile.password1"
+            password
+            v-model="form.opwd"
           />
         </view>
       </view>
@@ -29,7 +26,8 @@ const profile = ref<any>({
             class="input"
             type="safe-password"
             placeholder="请输入新密码"
-            :value="profile.password2"
+            password
+            v-model="form.npwd"
           />
         </view>
       </view>
@@ -40,12 +38,13 @@ const profile = ref<any>({
             class="input"
             type="safe-password"
             placeholder="请输入确认密码"
-            :value="profile.password3"
+            password
+            v-model="form.rpwd"
           />
         </view>
       </view>
     </view>
-    <button class="form-button">确认修改</button>
+    <button class="form-button" @tap="onSubmit">确认修改</button>
   </view>
 </template>
 

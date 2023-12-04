@@ -22,7 +22,7 @@
       "path": "pages/resources/resources",
       "name": "recCenter",
       "style": {
-        "navigationBarTitleText": "资源中心"
+        "navigationStyle": "custom"
       },
       "meta": {
         "ignoreAuth": false
@@ -80,8 +80,7 @@
     }
   ],
   "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarBackgroundColor": "#ffffff"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "color": "#666666",
@@ -220,7 +219,27 @@
           "path": "demand/demand",
           "name": "demand",
           "style": {
+            "navigationBarTitleText": "我的需求"
+          },
+          "meta": {
+            "ignoreAuth": false
+          }
+        },
+        {
+          "path": "demand/publish",
+          "name": "demandPublish",
+          "style": {
             "navigationBarTitleText": "发布需求"
+          },
+          "meta": {
+            "ignoreAuth": false
+          }
+        },
+        {
+          "path": "demand/detail",
+          "name": "demandDetail",
+          "style": {
+            "navigationBarTitleText": "需求详情"
           },
           "meta": {
             "ignoreAuth": false

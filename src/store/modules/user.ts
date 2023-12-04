@@ -1,45 +1,54 @@
-import type { UserInfo } from '@/types/user'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import store from '@/store'
+import { getPermissionApi, loginApi } from '@/api/login'
+import { useAuthStoreHook } from './auth'
+
+interface UserInfo {
+  username: string
+  roles: string[]
+  permissions: string[]
+}
 
 export const useUserStore = defineStore(
   'user',
   () => {
-    const token = ref<string>()
-    const setToken = (value: string) => (token.value = value)
-    const clearToken = () => (token.value = void 0)
-    const hasToken = () => !!token.value
-
-    const info = ref<UserInfo>({
+    const user = ref<UserInfo>({
       username: '',
       roles: [],
       permissions: []
     })
 
-    const setInfo = (value: UserInfo) => (info.value = value)
+    const loginByUsername = async (username: string, password: string) => {
+      const { tokenInfo } = await loginApi({
+        loginName: username,
+        pwd: password
+      })
+      const { tokenName, tokenValue } = tokenInfo as TokenInfo
+      useAuthStoreHook().setToken(tokenName, tokenValue)
+      const {
+        data: { userInfo, roleList }
+      } = await getPermissionApi()
+      user.value = {
+        username: userInfo.userName,
+        roles: roleList || [],
+        permissions: []
+      }
+    }
 
-    const clearInfo = () => {
-      info.value = {
+    const logout = () => {
+      useAuthStoreHook().clearToken()
+      user.value = {
         username: '',
         roles: [],
         permissions: []
       }
     }
 
-    const reset = () => {
-      clearToken()
-      clearInfo()
-    }
-
     return {
-      token,
-      info,
-      setToken,
-      clearToken,
-      hasToken,
-      setInfo,
-      clearInfo,
-      reset
+      user,
+      loginByUsername,
+      logout
     }
   },
   {
@@ -57,3 +66,5 @@ export const useUserStore = defineStore(
     }
   }
 )
+
+export const useUserStoreHook = () => useUserStore(store)

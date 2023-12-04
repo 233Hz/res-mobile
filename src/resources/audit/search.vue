@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Search } from './hooks'
+
+interface EmitEvent {
+  (e: 'on-search', search: Search): void
+}
+
+const emit = defineEmits<EmitEvent>()
 
 const search = ref({
-  name: ''
+  name: void 0
 })
+
+const onSearch = () => emit('on-search', search.value)
 </script>
 
 <template>
@@ -17,12 +26,18 @@ const search = ref({
         class="input"
       />
     </view>
+    <text class="search-text" @tap="onSearch">搜索</text>
   </view>
 </template>
 
 <style scoped lang="scss">
 .search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
   .search-input {
+    flex: 1;
     padding: 20rpx;
     display: flex;
     align-items: center;
@@ -38,6 +53,12 @@ const search = ref({
     .input {
       flex: 1;
     }
+  }
+
+  .search-text {
+    font-size: 28rpx;
+    margin-right: 20rpx;
+    flex-shrink: 0;
   }
 }
 </style>

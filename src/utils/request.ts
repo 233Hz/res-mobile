@@ -1,5 +1,6 @@
 const baseUrl = import.meta.env.VITE_BASE_API
-import { useUserStore } from '@/store'
+import { useAuthStoreHook } from '@/store'
+import createPopup from './popup'
 
 // 添加拦截器
 const httpInterceptor = {
@@ -16,21 +17,14 @@ const httpInterceptor = {
       ...options.header,
       'source-client': 'miniapp'
     }
-    const userStore = useUserStore()
-    const token = userStore.token
-    if (userStore.hasToken()) {
-      options.header.Authorization = token
+    const authStore = useAuthStoreHook()
+    if (authStore.hasToken()) {
+      options.header[authStore.tokenKey as string] = authStore.tokenValue
     }
   }
 }
 uni.addInterceptor('request', httpInterceptor)
 uni.addInterceptor('uploadFile', httpInterceptor)
-
-interface RequestResult<T> {
-  code: number
-  data: T
-  msg: string
-}
 
 export const request = <T>(
   options: UniApp.RequestOptions
@@ -40,25 +34,25 @@ export const request = <T>(
       ...options,
       // 请求成功
       success(res) {
-        const status = res.statusCode
-        if (status >= 200 && status < 300) {
-          resolve(res.data as RequestResult<T>)
-        } else if (status === 401) {
-          const userStore = useUserStore()
-          userStore.clearToken()
-          uni.navigateTo({
-            url: '/pages/login/login',
-            reLaunch: true
+        const { code, msg } = res.data as RequestResult<any>
+        if (code === 11012) {
+          createPopup({
+            type: 'info',
+            content: '身份信息已过期, 请重新登录',
+            onConfirm: () => {
+              useAuthStoreHook().clearToken()
+              uni.redirectTo({ url: '/pages/login/login' })
+              location.reload()
+            }
           })
-          reject(res)
-        } else {
+        } else if (code === 0) resolve(res.data as RequestResult<T>)
+        else {
           uni.showToast({
-            title: (res.data as RequestResult<T>).msg || '请求失败',
-            icon: 'none'
+            title: msg,
+            icon: 'error'
           })
-          reject(res)
+          reject(msg)
         }
-        console.log(res)
       },
       // 请求失败
       fail(err) {

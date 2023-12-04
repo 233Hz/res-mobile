@@ -1,38 +1,74 @@
 <script setup lang="ts">
-interface Props {
-  id: string
-}
+import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { collectResourceApi, getResourceByIdApi } from '@/api/resource'
+import { formatDate } from '@/utils/util'
+import type { Resource } from 'types/resource'
+import createPopup from '@/utils/popup'
 
-const query = defineProps<Props>()
-console.log(query)
+const data = ref<Resource>()
+
+const handleCollect = () => {
+  createPopup({
+    type: 'info',
+    content: '是否确认收藏该资源',
+    onConfirm: async () => {
+      if (data.value?.oid) {
+        const { data: collectId, msg } = await collectResourceApi({
+          resId: data.value.oid,
+          collectId: data.value?.collectId
+        })
+        data.value.collectId = collectId
+        uni.showToast({ title: msg, icon: 'success' })
+      }
+    }
+  })
+}
+const handleDownload = () => {}
+
+onLoad(async (option) => {
+  if (option?.id) {
+    const { data: res } = await getResourceByIdApi(Number(option.id))
+    data.value = res
+    console.log(data.value)
+  }
+})
 </script>
 
 <template>
   <view class="viewport">
     <view class="preview">
-      <iframe
-        class="preview-content"
-        src="https://view.xdocin.com/view?src=http%3A%2F%2F106.14.156.6%3A8088%2Fwebsite_doc%2Fres_file%2F1678343602223.pptx"
-      >
-      </iframe>
+      <iframe class="preview-content" :src="data?.resPath"> </iframe>
     </view>
     <view class="resources-info">
       <view class="info-name_view">
-        <text class="name">泼猴信息企业介绍.pptx</text>
-        <text class="icon-view">99</text>
+        <text class="name">{{ data?.resName }}</text>
+        <text class="icon-view">{{ data?.viewNum || 0 }}</text>
       </view>
       <view class="info-category_unit">
-        <text class="category-tag">产教融合企业</text>
-        <text class="unit">泼猴信息技术（上海）有限公司</text>
+        <text v-if="data?.sortName" class="category-tag">
+          {{ data?.sortName }}
+        </text>
+        <text v-if="data?.navName" class="unit">
+          {{ data?.navName }}
+        </text>
       </view>
       <view class="info-publish_btn">
         <view class="publish">
-          <text class="issuer">张三</text>
-          <text class="time">发布于：2023-01-01</text>
+          <text class="issuer">{{ data?.createUserName }}</text>
+          <text class="time">
+            发布于:
+            {{
+              data?.createTime &&
+              formatDate(data.createTime.toString(), 'YYYY-MM-DD')
+            }}
+          </text>
         </view>
         <view class="btn">
-          <text class="icon-collect"> 收藏</text>
-          <text class="icon-download"> 下载</text>
+          <text class="icon-heart" @tap="handleCollect">
+            {{ data?.collectId ? '已收藏' : '收藏' }}
+          </text>
+          <text class="icon-download" @tap="handleDownload"> 下载</text>
         </view>
       </view>
     </view>
@@ -128,7 +164,7 @@ page {
         align-items: center;
         gap: 30rpx;
 
-        .icon-collect,
+        .icon-heart,
         .icon-download {
           background-color: #5fb878;
           color: #fff;

@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import { useUserStore } from '@/store'
-import { useRouter } from 'uni-mini-router'
+import { useLogin } from './hooks'
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
-const userStore = useUserStore()
-const router = useRouter()
-
-const loginHandler = () => {
-  userStore.setToken(new Date().getTime().toString())
-  router.pushTab({ name: 'home' })
-}
+const { loading, form, handleLogin } = useLogin()
 </script>
 
 <template>
@@ -18,6 +11,7 @@ const loginHandler = () => {
     <view class="form">
       <view class="form__item">
         <input
+          v-model="form.username"
           class="form__item_input"
           type="text"
           placeholder="用户名"
@@ -26,19 +20,23 @@ const loginHandler = () => {
       </view>
       <view class="form__item">
         <input
+          v-model="form.password"
           class="form__item_input"
           type="safe-password"
+          password
           placeholder="密码"
           placeholder-style="color: #ccc"
         />
       </view>
-      <button class="form__button" @tap="loginHandler">登录</button>
+      <button
+        class="form__button"
+        :loading="loading"
+        :disabled="loading"
+        @tap="handleLogin"
+      >
+        登录
+      </button>
     </view>
-    <!-- <view class="divider">
-      <div class="left-line"></div>
-      <div class="divider-text">其他登录方式</div>
-      <div class="right-line"></div>
-    </view> -->
   </view>
 </template>
 <style>

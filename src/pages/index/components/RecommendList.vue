@@ -1,31 +1,42 @@
 <script setup lang="ts">
-import { useRouter } from 'uni-mini-router'
+import type { Resource } from 'types/resource'
 
-const router = useRouter()
+interface Props {
+  list?: Resource[]
+}
+
+withDefaults(defineProps<Props>(), {
+  list: () => []
+})
 </script>
 
 <template>
-  <view class="list">
-    <view
-      class="list__item"
-      v-for="item in 20"
-      :key="item"
-      @tap="router.push({ path: '/resources/preview/preview' })"
-    >
-      <image
-        src="https://picsum.photos/200"
-        mode="scaleToFill"
-        class="list__item__image"
-      />
-      <view class="list__item__content">
-        <view class="list__item__content__title">
-          <text class="list__item__content__title__tag">pdf</text>
-          这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的标题
-        </view>
-        <view class="list__item__content-user-count">
-          <view><text class="icon-user" />张三</view>
-          <view><text class="icon-view" />200</view>
-        </view>
+  <view>
+    <GlEmpty v-if="!list.length" text="暂无推荐资源" />
+    <view v-else class="list">
+      <view v-for="item in list" :key="item.oid" class="list__item">
+        <navigator
+          :url="`/resources/preview/preview?id=${item.oid}`"
+          hover-class="none"
+        >
+          <image
+            :src="item.resCover"
+            mode="scaleToFill"
+            class="list__item__image"
+          />
+          <view class="list__item__content">
+            <view class="list__item__content__title">
+              <text class="list__item__content__title__tag">
+                {{ item.sortName }}
+              </text>
+              {{ item.resName }}
+            </view>
+            <view class="list__item__content-user-count">
+              <view><text class="icon-user" />{{ item.createUserName }}</view>
+              <view><text class="icon-view" />{{ item.viewNum }}</view>
+            </view>
+          </view>
+        </navigator>
       </view>
     </view>
   </view>
@@ -41,8 +52,6 @@ const router = useRouter()
     background-color: #fff;
     overflow: hidden;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
 
     &__image {
       width: 100%;

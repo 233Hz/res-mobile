@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
-import type { BannerItem } from '@/types/home'
+import { useHome } from './hooks'
 import CustomNavbar from './components/CustomNavbar.vue'
 import TabPanel from './components/TabPanel.vue'
 import CategoryPanel1 from './components/CategoryPanel1.vue'
@@ -11,26 +10,8 @@ import HotList from './components/HotList.vue'
 import NotifyList from './components/NotifyList.vue'
 import FilterDrawer from './components/FilterDrawer.vue'
 
-const bannerList = ref<BannerItem[]>([])
-const mockFetchBannerData = (): Promise<BannerItem[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const random = Math.floor(Math.random() * 20) + 1
-      const data = Array.from({ length: 10 }).map((_, index) => {
-        return {
-          id: random + index,
-          imgUrl: `https://picsum.photos/400/200/?${random + index}`,
-          hrefUrl: '/pages/my/index'
-        }
-      })
-      resolve(data)
-    }, 1000)
-  })
-}
-const getBannerData = async () => {
-  const data = await mockFetchBannerData()
-  bannerList.value = data
-}
+const { bannerList, columnList, categoryList, newsList, hotList, notifyList } =
+  useHome()
 
 const activeTabIndex = ref(0)
 const tabChangeHandler = (index: number) => {
@@ -44,10 +25,6 @@ const tabFilterClickHandler = (index: number) => {
 }
 
 const filterRef = ref<InstanceType<typeof FilterDrawer>>()
-
-onLoad(async () => {
-  await getBannerData()
-})
 </script>
 
 <template>
@@ -60,9 +37,9 @@ onLoad(async () => {
         <!-- 轮播图 -->
         <GlSwiper :list="bannerList" />
         <!-- 一级栏目分类 -->
-        <CategoryPanel1 />
+        <CategoryPanel1 :list="columnList" />
         <!-- 资源格式分类 -->
-        <CategoryPanel2 />
+        <CategoryPanel2 :list="categoryList" />
         <!-- 选项卡 -->
         <TabPanel
           :active-index="activeTabIndex"
@@ -70,9 +47,9 @@ onLoad(async () => {
           @filter-click="tabFilterClickHandler"
         />
         <!-- 列表 -->
-        <RecommendList v-if="activeTabIndex === 0" />
-        <HotList v-else-if="activeTabIndex === 1" />
-        <NotifyList v-else-if="activeTabIndex === 2" />
+        <RecommendList v-if="activeTabIndex === 0" :list="newsList" />
+        <HotList v-else-if="activeTabIndex === 1" :list="hotList" />
+        <NotifyList v-else-if="activeTabIndex === 2" :list="notifyList" />
         <FilterDrawer ref="filterRef" />
       </view>
     </scroll-view>
@@ -107,3 +84,4 @@ page {
   }
 }
 </style>
+types/home

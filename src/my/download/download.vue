@@ -1,14 +1,39 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { formatDate } from '@/utils/util'
+import { useResDown } from './hooks'
+import ResourceRowItem from '@/components/resource/ResourceRowItem.vue'
+
+const { loading, resourceList, handleScrollToLower } = useResDown()
+</script>
 
 <template>
-  <scroll-view scroll-y class="scroll-view">
-    <view class="list">
-      <view class="item" v-for="item in 20" :key="item">
-        <text class="name truncate">大姚核桃，幸福希冀.mp4</text>
-        <text class="time">2023/03/09 20:28</text>
+  <view>
+    <GlEmpty v-if="!resourceList.length" text="暂无下载资源" />
+    <scroll-view
+      v-else
+      scroll-y
+      class="scroll-view"
+      @scrolltolower="handleScrollToLower"
+    >
+      <view class="list">
+        <view class="item" v-for="item in resourceList" :key="item.oid">
+          <ResourceRowItem :item="item">
+            <template #extra>
+              <view class="download-time">
+                下载时间:
+                {{
+                  (item.downloadTime &&
+                    formatDate(item.downloadTime.toString(), 'YYYY-MM-DD')) ||
+                  '无'
+                }}
+              </view>
+            </template>
+          </ResourceRowItem>
+        </view>
+        <view class="loading" v-show="loading">加载中...</view>
       </view>
-    </view>
-  </scroll-view>
+    </scroll-view>
+  </view>
 </template>
 
 <style>
@@ -27,31 +52,18 @@ page {
     padding: 20rpx;
 
     .item {
-      height: 96rpx;
-      line-height: 96rpx;
-      border-bottom: #f7f7f7 solid 1px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20rpx;
+      margin-top: 20rpx;
 
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .name {
-        flex: 1;
-        font-size: 30rpx;
-        color: #212121;
-        font-weight: bold;
-      }
-
-      .time {
-        font-size: 28rpx;
-        color: #c0c4cc;
-        font-weight: 400;
+      &:first-child {
+        margin-top: 0;
       }
     }
   }
+}
+
+.download-time {
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
 }
 </style>

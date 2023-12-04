@@ -1,66 +1,195 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { columnTreeApi } from '@/api/column'
+import { convertNode } from '@/utils/tree'
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import { watch } from 'vue'
+import { allCategoryApi } from '@/api/category'
+import { computed } from 'vue'
+import { useResourceStoreHook } from '@/store/modules/resource'
+import type { ResourcePageParams } from 'types/resource'
 
-const activeIndex = ref<number[]>([0, 0, 0, 0, 0])
+const props = defineProps<{
+  modelValue: ResourcePageParams
+}>()
 
-const indexs = ref([
-  {
-    id: 1,
-    children: ['全部', '最新发布', '最多预览']
+const emit = defineEmits<{
+  (e: 'change', value: ResourcePageParams): void
+}>()
+
+const searchForm = computed({
+  get() {
+    return props.modelValue
   },
-  {
-    children: [
-      '全部',
-      '六校联盟创新创业大赛',
-      '创新创业在线学习资源',
-      '创新创业在线学习资源',
-      '创新创业典型案例',
-      '创新创业典型案例'
-    ]
-  },
-  {
-    id: 3,
-    children: [
-      '全部',
-      '上海市医药学校',
-      '上海市医药学校',
-      '上海市医药学校',
-      '上海市医药学校',
-      '上海市第二轻工业学校',
-      '上海科技管理学校',
-      '联盟运营管理'
-    ]
-  },
-  {
-    id: 4,
-    children: ['全部']
-  },
-  {
-    id: 5,
-    children: [
-      '全部',
-      '产教融合企业',
-      '创新创业大赛商业计划书',
-      '创新创业课程',
-      '创新创业教学课件',
-      '创新创业大赛视频'
-    ]
+  set(value: ResourcePageParams) {
+    emit('change', value)
   }
-])
+})
+
+interface IndexItem {
+  label: string
+  value: string | number | undefined
+  children?: IndexItem[]
+}
+
+const orderOptions: IndexItem[] = [
+  { label: '最新发布', value: 'v' },
+  { label: '最多预览', value: 'd' }
+]
+const columnOptionsForL1 = ref<IndexItem[]>([])
+const columnOptionsForL2 = ref<IndexItem[]>([])
+const columnOptionsForL3 = ref<IndexItem[]>([])
+const categoryOptions = ref<IndexItem[]>([])
+
+const fetchColumnTree = async () => {
+  const { data } = await columnTreeApi()
+  columnOptionsForL1.value = convertNode(data, (item) => ({
+    label: item.title,
+    value: item.id
+  }))
+}
+
+const fetchCategoryList = async () => {
+  const { data } = await allCategoryApi()
+  categoryOptions.value = data.map((item) => ({
+    label: item.sortName as string,
+    value: item.oid
+  }))
+}
+
+watch(
+  () => searchForm.value,
+  (value) => {
+    if (value.navId) {
+      columnOptionsForL2.value =
+        columnOptionsForL1.value.find((item) => item.value === value.navId)
+          ?.children || []
+      searchForm.value.secondNavId = void 0
+    }
+    if (value.secondNavId) {
+      columnOptionsForL3.value =
+        columnOptionsForL2.value.find(
+          (item) => item.value === value.secondNavId
+        )?.children || []
+      searchForm.value.threeNavId = void 0
+    }
+  },
+  {
+    deep: true
+  }
+)
+
+onLoad(async () => {
+  await Promise.all([fetchColumnTree(), fetchCategoryList()])
+})
+
+onShow(() => {
+  const { name, cid1, cid2, cid3, tid } = useResourceStoreHook().query
+  searchForm.value.key = name
+  searchForm.value.navId = cid1
+  searchForm.value.secondNavId = cid2
+  searchForm.value.threeNavId = cid3
+  searchForm.value.sortId = tid
+})
 </script>
 
 <template>
   <view class="index">
-    <view class="row" v-for="(item, index1) in indexs" :key="item.id">
+    <!-- 排序 -->
+    <view class="row">
       <scroll-view scroll-x class="scroll-view">
         <text
-          v-for="(child, index2) in item.children"
-          :key="child"
+          v-for="item in orderOptions"
+          :key="item.value"
           class="item"
-          :class="{ active: activeIndex[index1] === index2 }"
-          @tap="activeIndex[index1] = index2"
+          :class="{ active: searchForm.order === item.value }"
+          @tap="searchForm.order = item.value as string"
         >
-          {{ child }}
+          {{ item.label }}
+        </text>
+      </scroll-view>
+    </view>
+    <!-- 一级栏目 -->
+    <view class="row">
+      <scroll-view scroll-x class="scroll-view">
+        <text
+          class="item"
+          :class="{ active: searchForm.navId === void 0 }"
+          @tap="searchForm.navId = void 0"
+        >
+          全部
+        </text>
+        <text
+          v-for="item in columnOptionsForL1"
+          :key="item.value"
+          class="item"
+          :class="{ active: searchForm.navId === item.value }"
+          @tap="searchForm.navId = item.value as number"
+        >
+          {{ item.label }}
+        </text>
+      </scroll-view>
+    </view>
+    <!-- 二级栏目 -->
+    <view class="row">
+      <scroll-view scroll-x class="scroll-view">
+        <text
+          class="item"
+          :class="{ active: searchForm.secondNavId === void 0 }"
+          @tap="searchForm.secondNavId = void 0"
+        >
+          全部
+        </text>
+        <text
+          v-for="item in columnOptionsForL2"
+          :key="item.value"
+          class="item"
+          :class="{ active: searchForm.secondNavId === item.value }"
+          @tap="searchForm.secondNavId = item.value as number"
+        >
+          {{ item.label }}
+        </text>
+      </scroll-view>
+    </view>
+    <!-- 三级栏目 -->
+    <view class="row">
+      <scroll-view scroll-x class="scroll-view">
+        <text
+          class="item"
+          :class="{ active: searchForm.threeNavId === void 0 }"
+          @tap="searchForm.threeNavId = void 0"
+        >
+          全部
+        </text>
+        <text
+          v-for="item in columnOptionsForL3"
+          :key="item.value"
+          class="item"
+          :class="{ active: searchForm.threeNavId === item.value }"
+          @tap="searchForm.threeNavId = item.value as number"
+        >
+          {{ item.label }}
+        </text>
+      </scroll-view>
+    </view>
+    <!-- 分类 -->
+    <view class="row">
+      <scroll-view scroll-x class="scroll-view">
+        <text
+          class="item"
+          :class="{ active: searchForm.sortId === void 0 }"
+          @tap="searchForm.sortId = void 0"
+        >
+          全部
+        </text>
+        <text
+          v-for="item in categoryOptions"
+          :key="item.value"
+          class="item"
+          :class="{ active: searchForm.sortId === item.value }"
+          @tap="searchForm.sortId = item.value as number"
+        >
+          {{ item.label }}
         </text>
       </scroll-view>
     </view>
@@ -97,7 +226,6 @@ const indexs = ref([
         color: #909399;
       }
       .active {
-        font-weight: bold;
         color: #e6a23c;
         background-color: #fdf6ec;
       }

@@ -1,20 +1,33 @@
 <script setup lang="ts">
-import type { BannerItem } from '@/types/home'
+import { useResourceStoreHook } from '@/store/modules/resource'
+import type { BannerItem } from 'types/home'
+import { useRouter } from 'uni-mini-router'
 
 interface Props {
   indicatorDots?: boolean
   autoplay?: boolean
   interval?: number
   duration?: number
-  list: BannerItem[]
+  list?: BannerItem[]
 }
 
 withDefaults(defineProps<Props>(), {
   indicatorDots: true,
   autoplay: true,
   interval: 2000,
-  duration: 500
+  duration: 500,
+  list: () => []
 })
+
+const router = useRouter()
+const handleTap = (link: string) => {
+  let params: Record<string, string> = {}
+  link.split(',').forEach((item, index) => {
+    Number(item) && (params[`cid${index + 1}`] = item)
+  })
+  useResourceStoreHook().SET_QUERY(params)
+  router.pushTab({ name: 'recCenter' })
+}
 </script>
 
 <template>
@@ -26,11 +39,13 @@ withDefaults(defineProps<Props>(), {
     :interval="interval"
     :duration="duration"
   >
-    <swiper-item v-for="item in list" :key="item.id">
-      <navigator :url="item.hrefUrl" hover-class="none" class="navigator">
-        <image mode="widthFix" :src="item.imgUrl" class="image" />
-      </navigator>
-      >
+    <GlEmpty v-if="!list.length" text="暂无链接" :height="320" />
+    <swiper-item
+      v-for="item in list"
+      :key="item.id"
+      @tap="handleTap(item.hrefUrl)"
+    >
+      <image mode="widthFix" :src="item.imgUrl" class="image" />
     </swiper-item>
   </swiper>
 </template>
@@ -42,10 +57,10 @@ withDefaults(defineProps<Props>(), {
   border-radius: 20px;
   overflow: hidden;
 
-  .navigator,
   .image {
     width: 100%;
     height: 100%;
   }
 }
 </style>
+types/home

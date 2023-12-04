@@ -1,21 +1,37 @@
 <script setup lang="ts">
-const categorys = [
-  '产教融合企业',
-  '创新创业大赛商业计划书',
-  '创新创业课程',
-  '创新创业教学课件',
-  '创新创业教学课件'
-]
+import { useRouter } from 'uni-mini-router'
+import type { ColumnItem } from 'types/home'
+import { useResourceStoreHook } from '@/store/modules/resource'
+
+interface Props {
+  list: ColumnItem[]
+}
+
+withDefaults(defineProps<Props>(), {
+  list: () => []
+})
+
+const router = useRouter()
+const handleTap = (id: number) => {
+  useResourceStoreHook().SET_QUERY({ cid1: id })
+  router.pushTab({ name: 'recCenter' })
+}
 </script>
 
 <template>
   <view class="tab">
     <view class="tab__title">资源栏目</view>
-    <scroll-view scroll-x class="tab__scroll hidden-scroll">
-      <text class="tab__scroll__item" v-for="item in categorys" :key="item">
-        {{ item }}
+    <scroll-view v-if="list.length" scroll-x class="tab__scroll hidden-scroll">
+      <text
+        class="tab-item"
+        v-for="item in list"
+        :key="item.id"
+        @tap="handleTap(item.id)"
+      >
+        {{ item.title }}
       </text>
     </scroll-view>
+    <view v-else class="tap__empty">暂无栏目</view>
   </view>
 </template>
 
@@ -49,7 +65,7 @@ const categorys = [
     margin-top: 20rpx;
     white-space: nowrap;
 
-    &__item {
+    .tab-item {
       display: inline-block;
       text-align: center;
       color: #121212;
@@ -68,6 +84,13 @@ const categorys = [
         padding-right: 0;
       }
     }
+  }
+
+  &__empty {
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    color: #999;
   }
 }
 </style>

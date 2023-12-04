@@ -1,29 +1,56 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { Resource } from 'types/resource'
+
+interface Props {
+  list?: Resource[]
+}
+
+withDefaults(defineProps<Props>(), {
+  list: () => []
+})
+</script>
 
 <template>
-  <view class="container">
-    <view class="hot__item" v-for="item in 10" :key="item">
-      <image
-        :src="`https://picsum.photos/200/150/?${item}`"
-        mode="scaleToFill"
-        class="hot__item__image"
-      />
-      <view class="hot__item__right">
-        <view class="hot__item__right__title">
-          <text class="hot__item__right__title__tag">pdf</text>
-          这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的标题
-        </view>
-        <view class="hot__item__right__user-count">
-          <text class="user"><text class="icon-user" /> 张三</text>
-          <text class="count"><text class="icon-view" /> 10000+</text>
-        </view>
+  <view>
+    <GlEmpty v-if="!list.length" text="暂无最热资源" />
+    <view class="list" v-else>
+      <view v-for="item in list" :key="item.oid" class="hot__item">
+        <navigator
+          :url="`/resources/preview/preview?id=${item.oid}`"
+          hover-class="none"
+          style="display: flex; gap: 20rpx"
+        >
+          <image
+            :src="item.resCover"
+            mode="scaleToFill"
+            class="hot__item__image"
+          />
+          <view class="hot__item__right">
+            <view class="hot__item__right__title">
+              <text class="hot__item__right__title__tag">
+                {{ item.sortName }}
+              </text>
+              {{ item.resName }}
+            </view>
+            <view class="hot__item__right__user-count">
+              <text class="user">
+                <text class="icon-user" />
+                {{ item.createUserName }}
+              </text>
+              <text class="count">
+                <text class="icon-view" />
+                {{ item.viewNum }}
+              </text>
+            </view>
+          </view>
+        </navigator>
       </view>
     </view>
   </view>
 </template>
 
 <style scoped lang="scss">
-.container {
+.list {
   padding: 20rpx;
   background-color: #fff;
   border-radius: 10rpx;
@@ -31,8 +58,6 @@
   .hot__item {
     padding: 20rpx 0;
     border-bottom: #f7f7f7 solid 1px;
-    display: flex;
-    gap: 20rpx;
 
     &:last-child {
       border: none;

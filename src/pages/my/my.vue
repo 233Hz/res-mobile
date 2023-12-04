@@ -1,32 +1,21 @@
 <script setup lang="ts">
-import { useUserStore } from '@/store'
 import { useRouter } from 'uni-mini-router'
+import { useUserStoreHook } from '@/store'
+import createPopup from '@/utils/popup'
 
-const userStore = useUserStore()
+const userStore = useUserStoreHook()
 const router = useRouter()
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
-const addAdminRole = () => {
-  if (userStore.info.roles.indexOf('admin') == -1) {
-    userStore.info.roles.push('admin')
-    uni.showToast({ title: '添加成功' })
-  } else {
-    uni.showToast({ title: '请勿重复添加' })
-  }
-}
-
-const removeAdminRole = () => {
-  if (userStore.info.roles.indexOf('admin') != -1) {
-    userStore.info.roles.splice(userStore.info.roles.indexOf('admin'), 1)
-    uni.showToast({ title: '移除成功' })
-  } else {
-    uni.showToast({ title: '已移除' })
-  }
-}
-
-const logout = () => {
-  userStore.reset()
-  router.push({ name: 'login' })
+const handleLogout = () => {
+  createPopup({
+    type: 'info',
+    content: '是否确认退出',
+    onConfirm: () => {
+      userStore.logout()
+      router.push({ name: 'login' })
+    }
+  })
 }
 </script>
 
@@ -37,39 +26,46 @@ const logout = () => {
         <view
           class="list__group__item"
           @tap="() => router.push({ name: 'profile' })"
-          >我的资料</view
         >
+          <navigator url="/my/profile/profile" hover-class="none">
+            我的资料
+          </navigator>
+        </view>
         <view
           class="list__group__item"
           @tap="() => router.push({ name: 'setPassword' })"
-          >修改密码</view
         >
+          <navigator url="/my/set-password/set-password" hover-class="none">
+            修改密码
+          </navigator>
+        </view>
         <view
           class="list__group__item"
           @tap="() => router.push({ name: 'downloadRecord' })"
-          >下载记录</view
         >
+          <navigator url="/my/download/download" hover-class="none">
+            下载记录
+          </navigator>
+        </view>
         <view
           class="list__group__item"
           @tap="() => router.push({ name: 'collectRecord' })"
-          >我的收藏</view
         >
+          <navigator url="/my/collect/collect" hover-class="none">
+            我的收藏
+          </navigator>
+        </view>
         <view
           class="list__group__item"
           @tap="() => router.push({ name: 'demand' })"
-          >资源需求</view
         >
+          <navigator url="/my/demand/demand" hover-class="none">
+            资源需求
+          </navigator>
+        </view>
       </view>
       <view class="list__group">
-        <view class="list__group__item" @tap="addAdminRole"
-          >添加管理员权限</view
-        >
-        <view class="list__group__item" @tap="removeAdminRole"
-          >移除管理员权限</view
-        >
-      </view>
-      <view class="list__group">
-        <view class="list__group__item" @tap="logout">退出登入</view>
+        <view class="list__group__item" @tap="handleLogout">退出登入</view>
       </view>
     </view>
   </view>
@@ -111,3 +107,4 @@ const logout = () => {
   }
 }
 </style>
+@/utils/popup

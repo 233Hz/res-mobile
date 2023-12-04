@@ -1,17 +1,39 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useResCollect } from './hooks'
+import ResourceRowItem from '@/components/resource/ResourceRowItem.vue'
+
+const { loading, resourceList, handleCollect, handleScrollToLower } =
+  useResCollect()
+</script>
 
 <template>
-  <scroll-view scroll-y class="scroll-view">
-    <view class="list">
-      <view class="item" v-for="item in 20" :key="item">
-        <view class="info">
-          <view class="name truncate">大姚核桃，幸福希冀.mp4</view>
-          <view class="time">2023/03/09 20:28</view>
+  <view>
+    <GlEmpty v-if="!resourceList.length" text="暂无下载资源" />
+    <scroll-view
+      v-else
+      scroll-y
+      class="scroll-view"
+      @scrolltolower="handleScrollToLower"
+    >
+      <view class="list">
+        <view class="item" v-for="item in resourceList" :key="item.oid">
+          <ResourceRowItem :item="item">
+            <template #extra>
+              <view class="collect">
+                <text
+                  class="collect__btn icon-heart"
+                  @tap.stop="handleCollect(item.oid, item.collectId)"
+                >
+                  取消收藏
+                </text>
+              </view>
+            </template>
+          </ResourceRowItem>
         </view>
-        <text class="icon-collect" />
+        <view class="loading" v-show="loading">加载中...</view>
       </view>
-    </view>
-  </scroll-view>
+    </scroll-view>
+  </view>
 </template>
 
 <style>
@@ -30,39 +52,24 @@ page {
     padding: 20rpx;
 
     .item {
-      padding: 20rpx 0;
-      border-bottom: #f7f7f7 solid 1px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20rpx;
+      margin-top: 20rpx;
 
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .info {
-        flex: 1;
-
-        .name {
-          font-size: 30rpx;
-          color: #212121;
-          font-weight: bold;
-        }
-
-        .time {
-          margin-top: 10rpx;
-          font-size: 28rpx;
-          color: #c0c4cc;
-          font-weight: 400;
-        }
-      }
-
-      .icon-collect {
-        font-size: 48rpx;
-        color: red;
+      &:first-child {
+        margin-top: 0;
       }
     }
+  }
+}
+
+.collect {
+  text-align: right;
+
+  &__btn {
+    padding: 4rpx 10rpx;
+    font-size: 28rpx;
+    color: #fff;
+    background-color: #f56c6c;
+    border-radius: 6rpx;
   }
 }
 </style>

@@ -1,9 +1,10 @@
 import { createPinia } from 'pinia'
 import persist from 'pinia-plugin-persistedstate'
 
-const pinia = createPinia()
-pinia.use(persist)
+const store = createPinia()
+store.use(persist)
 
-export default pinia
+export default store
 
 export * from './modules/user'
+export * from './modules/auth'

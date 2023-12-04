@@ -34,7 +34,7 @@ const emit = defineEmits<{
         {{ item }}
       </text>
     </view>
-    <view class="container__right">
+    <view class="container__right" v-if="false">
       <text
         v-show="activeIndex === 0"
         class="icon-navbar"

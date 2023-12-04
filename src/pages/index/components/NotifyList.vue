@@ -1,37 +1,53 @@
 <script setup lang="ts">
-import { useRouter } from 'uni-mini-router'
+import type { Notify } from 'types/notify'
 
-const router = useRouter()
+interface Props {
+  list: Notify[]
+}
+
+withDefaults(defineProps<Props>(), {
+  list: () => []
+})
 </script>
 
 <template>
-  <view class="container">
-    <view
-      class="notify-item"
-      v-for="item in 10"
-      :key="item"
-      @tap="router.push({ name: 'notifyDetails', params: { id: item + '' } })"
-    >
-      <view class="notify-item__title truncate">
-        （转发）关于开展2023年上海市女大学生创新创业大赛的通知
-      </view>
-      <view class="notify-item__time">2023-11-10</view>
+  <view>
+    <GlEmpty v-if="!list.length" text="暂无通知公告" />
+    <view v-else class="list">
+      <navigator
+        v-for="item in list"
+        :key="item.oid"
+        :url="`/pages/notify/details?id=${item.oid}`"
+        hover-class="none"
+        class="notify-item"
+      >
+        <view class="notify-item__title truncate">
+          {{ item.title }}
+        </view>
+        <view class="notify-item__time">{{ item.createTime }}</view>
+      </navigator>
     </view>
   </view>
 </template>
 
 <style scoped lang="scss">
-.container {
+.list {
   padding: 20rpx;
   background-color: #fff;
   border-radius: 10rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 40rpx;
 
   .notify-item {
+    height: 100rpx;
+    line-height: 100rpx;
+    margin-bottom: 20rpx;
+    border-bottom: #f6f6f6 solid 1px;
     display: flex;
     gap: 20rpx;
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
 
     &__title {
       font-size: 30rpx;

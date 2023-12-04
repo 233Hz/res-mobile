@@ -1,40 +1,74 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'uni-mini-router'
+import type { Search } from './hooks'
 
-const router = useRouter()
+interface EmitEvent {
+  (e: 'on-search', search: Search): void
+}
 
-const search = ref({
-  name: ''
+const states = [
+  {
+    label: '全部',
+    value: void 0
+  },
+  {
+    label: '待审核',
+    value: 2
+  },
+  {
+    label: '审核中',
+    value: 3
+  },
+  {
+    label: '已下架',
+    value: 4
+  },
+  {
+    label: '未通过',
+    value: 5
+  },
+  {
+    label: '已发布',
+    value: 8
+  }
+]
+
+const emit = defineEmits<EmitEvent>()
+
+const search = ref<Search>({
+  name: void 0,
+  state: void 0
 })
 
-const activeIndex = ref(0)
-const tags = ['全部', '待审核', '审核中', '已下架', '未通过', '已发布']
+const onSearch = () => emit('on-search', search.value)
 </script>
 
 <template>
   <view class="container">
     <view class="search-input">
+      <navigator url="/resources/upload/upload" hover-class="none">
+        <text class="icon-upload" />
+      </navigator>
       <view class="search-input__left">
         <label class="icon-search" />
         <input
+          v-model="search.name"
           prefixIcon="search"
-          :model="search.name"
           placeholder="搜索资源名称"
           class="input"
         />
       </view>
-      <text class="icon-upload" @tap="router.push({ name: 'resUpload' })" />
+      <text class="search-text" @tap="onSearch">搜索</text>
     </view>
     <scroll-view scroll-x class="scroll-view hidden-scroll">
       <text
         class="tag-item"
-        v-for="(item, index) in tags"
-        :key="item"
-        :class="{ active: activeIndex === index }"
-        @tap="() => (activeIndex = index)"
+        v-for="item in states"
+        :key="item.value"
+        :class="{ active: search.state === item.value }"
+        @tap="() => (search.state = item.value)"
       >
-        {{ item }}
+        {{ item.label }}
       </text>
     </scroll-view>
   </view>
@@ -43,10 +77,16 @@ const tags = ['全部', '待审核', '审核中', '已下架', '未通过', '已
 <style scoped lang="scss">
 .container {
   padding: 20rpx;
+
   .search-input {
     display: flex;
     align-items: center;
     gap: 20rpx;
+
+    .icon-upload {
+      font-size: 60rpx;
+      flex-shrink: 0;
+    }
 
     .search-input__left {
       flex: 1;
@@ -65,9 +105,10 @@ const tags = ['全部', '待审核', '审核中', '已下架', '未通过', '已
         flex: 1;
       }
     }
-
-    .icon-upload {
-      font-size: 60rpx;
+    .search-text {
+      font-size: 28rpx;
+      margin-right: 20rpx;
+      flex-shrink: 0;
     }
   }
 

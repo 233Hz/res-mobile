@@ -87,7 +87,7 @@ const handleTap = () => {
 
     .res-info {
       display: flex;
-      align-items: end;
+      align-items: flex-end;
       gap: 20rpx;
 
       &__left {

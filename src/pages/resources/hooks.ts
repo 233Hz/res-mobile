@@ -1,7 +1,8 @@
 import { computed, ref, watch } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { pageResourceApi } from '@/api/resource'
 import type { Resource } from 'types/resource'
+import { useResourceStoreHook } from '@/store/modules/resource'
 
 export const useResources = () => {
   const loading = ref(false)
@@ -68,13 +69,29 @@ export const useResources = () => {
     }
   }
 
-  onLoad(async (options) => {
-    console.log(options)
+  watch(
+    () => searchForm.value,
+    async () => {
+      await onFeatch()
+    },
+    {
+      deep: true
+    }
+  )
 
+  onLoad(async () => {
     await onFeatch()
   })
 
-  watch(searchForm.value, async () => await onFeatch())
+  onShow(() => {
+    const { name, cid1, cid2, cid3, tid } = useResourceStoreHook().query
+    searchForm.value.key = name
+    searchForm.value.navId = cid1
+    searchForm.value.secondNavId = cid2
+    searchForm.value.threeNavId = cid3
+    searchForm.value.sortId = tid
+  })
+
   return {
     loading,
     searchForm,

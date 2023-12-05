@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useResourceStore } from '@/store/modules/resource'
+import { ref } from 'vue'
 
 interface EmitEvent {
-  (e: 'search'): void
+  (e: 'search', value: string | undefined): void
 }
 const emit = defineEmits<EmitEvent>()
 const { safeAreaInsets } = uni.getSystemInfoSync()
-const resourceStore = useResourceStore()
-const handleSearch = () => emit('search')
+const searchValue = ref<string | undefined>()
+const handleSearch = () => emit('search', searchValue.value)
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const handleSearch = () => emit('search')
       <view class="navbar__search">
         <text class="icon-search" />
         <input
-          v-model="resourceStore.search.key"
+          v-model="searchValue"
           class="search-input"
           placeholder="关键词搜索"
         />

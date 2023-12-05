@@ -56,10 +56,8 @@ export const useResources = () => {
     }))
   }
 
-  const handleInputSearch = async (value: string) => {
-    resourceStore.setSearch({
-      key: value
-    })
+  const handleInputSearch = async (value: string | undefined) => {
+    resourceStore.setSearch({ key: value }, true)
     await onFeatch()
   }
 

@@ -2,7 +2,8 @@
 import { useLogin } from './hooks'
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
-const { loading, form, handleLogin } = useLogin()
+const { loading, form, handleLogin, handleRegister, handleNotLogin } =
+  useLogin()
 </script>
 
 <template>
@@ -28,14 +29,27 @@ const { loading, form, handleLogin } = useLogin()
           placeholder-style="color: #ccc"
         />
       </view>
-      <button
-        class="form__button"
-        :loading="loading"
-        :disabled="loading"
-        @tap="handleLogin"
-      >
-        登录
-      </button>
+      <view class="form__button">
+        <button
+          class="login"
+          :loading="loading"
+          :disabled="loading"
+          @tap="handleLogin"
+        >
+          登录
+        </button>
+        <button
+          class="register"
+          :loading="loading"
+          :disabled="loading"
+          @tap="handleRegister"
+        >
+          申请注册
+        </button>
+        <view class="not-login">
+          <text class="text" @tap="handleNotLogin">暂不登入</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -75,26 +89,26 @@ page {
     }
 
     &__button {
-      width: 100%;
-      background-color: #4fb869;
-      color: #fff;
-    }
-  }
+      .login {
+        color: #fff;
+        background-color: #4fb869;
+      }
 
-  .divider {
-    display: flex;
-    align-items: center;
+      .register {
+        margin-top: 20rpx;
+        color: #393a3e;
+        background-color: #fff;
+      }
 
-    .left-line,
-    .right-line {
-      flex: 1;
-      height: 1px;
-      background-color: #ccc;
-    }
+      .not-login {
+        margin-top: 20rpx;
+        text-align: center;
 
-    .divider-text {
-      padding: 0 20rpx;
-      color: #212121;
+        .text {
+          font-size: 28rpx;
+          color: #909399;
+        }
+      }
     }
   }
 }

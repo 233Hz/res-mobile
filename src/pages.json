@@ -15,12 +15,12 @@
         "navigationStyle": "custom"
       },
       "meta": {
-        "ignoreAuth": false
+        "ignoreAuth": true
       }
     },
     {
       "path": "pages/resources/resources",
-      "name": "recCenter",
+      "name": "resCenter",
       "style": {
         "navigationStyle": "custom"
       },
@@ -63,6 +63,16 @@
       "name": "login",
       "style": {
         "navigationStyle": "custom"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "path": "pages/register/register",
+      "name": "register",
+      "style": {
+        "navigationBarTitleText": "申请注册"
       },
       "meta": {
         "ignoreAuth": true

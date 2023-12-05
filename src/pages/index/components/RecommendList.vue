@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { resUrl } from '@/api/file'
 import type { Resource } from 'types/resource'
 
 interface Props {
@@ -20,7 +21,7 @@ withDefaults(defineProps<Props>(), {
           hover-class="none"
         >
           <image
-            :src="item.resCover"
+            :src="resUrl(`/${item.resCover}`)"
             mode="scaleToFill"
             class="list__item__image"
           />

@@ -1,9 +1,10 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getUserInfoApi, updateSelfInfoApi } from '@/api/user'
+import type { FormData, FormItem } from './util'
 
 export const useProfile = () => {
-  const form = ref<any>({
+  const form = ref<FormData>({
     oid: void 0,
     loginName: void 0,
     userName: void 0,
@@ -29,11 +30,11 @@ export const useProfile = () => {
   }
 
   const handleGenderChange: UniHelper.RadioGroupOnChange = (ev) => {
-    form.value.sex = ev.detail.value
+    form.value.sex = +ev.detail.value
   }
 
   const onSubmit = async () => {
-    await updateSelfInfoApi(form.value)
+    await updateSelfInfoApi(form.value as FormItem)
     uni.showToast({
       title: '修改成功',
       icon: 'success'

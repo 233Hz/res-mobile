@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useResourceStoreHook } from '@/store/modules/resource'
-import type { Category } from 'types/category'
 import { useRouter } from 'uni-mini-router'
+import type { Category } from 'types/category'
+import defaultIcon from '@/static/images/file-image.png'
 
 interface Props {
   list: Category[]
@@ -13,8 +14,8 @@ withDefaults(defineProps<Props>(), {
 
 const router = useRouter()
 const handleTap = (id: number) => {
-  useResourceStoreHook().SET_QUERY({ tid: id })
-  router.pushTab({ name: 'recCenter' })
+  useResourceStoreHook().setSearch({ sortId: id })
+  router.pushTab({ name: 'resCenter' })
 }
 </script>
 
@@ -31,7 +32,7 @@ const handleTap = (id: number) => {
           @tap="handleTap(item.oid)"
         >
           <image
-            :src="item.sortPic"
+            :src="item.sortPic || defaultIcon"
             mode="scaleToFill"
             class="tab-item__image"
           />
@@ -64,7 +65,7 @@ const handleTap = (id: number) => {
       transform: translateY(-50%);
       width: 8rpx;
       height: 60%;
-      background-color: #4fb869;
+      background-color: var(--system-color);
       border-radius: 12px;
     }
   }

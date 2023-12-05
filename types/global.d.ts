@@ -1,7 +1,8 @@
 declare global {
   interface ViteEnv {
     VITE_BASE_API: string
-    VITE_UPLOAD_BASE_API: string
+    VITE_RES_URL: string
+    VITE_PREVIEW_URL: string
   }
 
   interface TokenInfo {

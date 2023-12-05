@@ -35,11 +35,11 @@ const { form, handleGenderChange, onSubmit } = useProfile()
         <view class="content">
           <radio-group @change="handleGenderChange">
             <label class="radio">
-              <radio value="1" :checked="form.sex === 1" color="#007aff" />
+              <radio value="1" :checked="form.sex === 1" color="#009688" />
               男
             </label>
             <label class="radio">
-              <radio value="2" :checked="form.sex === 2" color="#007aff" />
+              <radio value="2" :checked="form.sex === 2" color="#009688" />
               女
             </label>
           </radio-group>
@@ -139,7 +139,7 @@ const { form, handleGenderChange, onSubmit } = useProfile()
     margin-top: 20rpx;
     border-radius: 80rpx;
     border: none;
-    background-color: #007aff;
+    background-color: var(--system-color);
     color: #fff;
   }
 }

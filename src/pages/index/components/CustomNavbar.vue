@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { useResourceStoreHook } from '@/store/modules/resource'
-import { useRouter } from 'uni-mini-router'
 import { ref } from 'vue'
+import { useAuthStoreHook } from '@/store/modules/auth'
+
+interface EmitEvent {
+  (e: 'on-register'): void
+  (e: 'on-search', value: string | undefined): void
+}
+
+const emit = defineEmits<EmitEvent>()
 
 const { safeAreaInsets } = uni.getSystemInfoSync()
-const searchValue = ref('')
+const searchValue = ref<string>()
+const clearSearch = () => (searchValue.value = void 0)
+const handleSearch = () => emit('on-search', searchValue.value)
+const handleRegister = () => emit('on-register')
 
-const router = useRouter()
-const handleSearch = () => {
-  useResourceStoreHook().SET_QUERY({ name: searchValue.value })
-  router.pushTab({ name: 'recCenter' })
-  searchValue.value = ''
-}
+defineExpose({ clearSearch })
 </script>
 
 <template>
@@ -35,15 +39,15 @@ const handleSearch = () => {
         </navigator>
       </view>
       <view class="navbar__input">
-        <text class="input-icon icon-search" />
         <input
           class="search-input"
           v-model="searchValue"
           placeholder="关键词搜索"
         />
+        <text class="input-icon icon-search" @tap="handleSearch" />
       </view>
-      <view class="navbar__button" @tap="handleSearch">
-        <text class="text">搜索</text>
+      <view class="navbar__button" v-if="!useAuthStoreHook().hasToken()">
+        <text class="text" @tap="handleRegister">注册</text>
       </view>
     </view>
   </view>
@@ -73,22 +77,22 @@ const handleSearch = () => {
 
   &__input {
     flex: 1;
-    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 10rpx 20rpx;
+    border: 1px solid #ccc;
+    border-radius: 20px;
 
     .input-icon {
-      position: absolute;
-      top: 0;
-      left: 30rpx;
+      flex-shrink: 0;
       height: 100%;
-      font-size: 32rpx;
       display: flex;
       align-items: center;
     }
 
     .search-input {
-      padding: 10rpx 20rpx 10rpx 80rpx;
-      border: 1px solid #ccc;
-      border-radius: 20px;
+      flex: 1;
+      overflow: hidden;
     }
   }
 
@@ -96,7 +100,7 @@ const handleSearch = () => {
     padding-right: 20rpx;
 
     .text {
-      font-size: 32rpx;
+      font-size: 28rpx;
       font-weight: 400;
       color: #909399;
     }

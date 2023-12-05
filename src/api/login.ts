@@ -1,5 +1,5 @@
 import { request } from '@/utils/request'
-import type { LoginData, UserPermissionVO } from 'types/login'
+import type { ApplyRegister, LoginData, UserPermissionVO } from 'types/login'
 
 /** 登入 */
 export const loginApi = (data: LoginData) =>
@@ -16,4 +16,14 @@ export const getPermissionApi = () =>
   request<UserPermissionVO>({
     url: '/user/getUserPermission',
     method: 'GET'
+  })
+
+/**
+ * 注册申请
+ */
+export const registerApi = (data: ApplyRegister) =>
+  request({
+    url: '/regApply/save',
+    method: 'POST',
+    data
   })

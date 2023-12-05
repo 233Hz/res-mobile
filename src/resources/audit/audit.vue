@@ -49,5 +49,12 @@ page {
     flex: 1;
     overflow: hidden;
   }
+
+  .loading {
+    height: 60rpx;
+    line-height: 60rpx;
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>

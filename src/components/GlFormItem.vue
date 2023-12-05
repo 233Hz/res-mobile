@@ -11,9 +11,11 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <view class="form-item">
-    <text class="label" :style="{ width: labelWidth }">
-      <slot name="label">{{ label }}</slot>
-    </text>
+    <slot name="label">
+      <text v-if="label" class="label" :style="{ width: labelWidth }">
+        {{ label }}
+      </text>
+    </slot>
     <view class="content">
       <slot name="default"></slot>
     </view>

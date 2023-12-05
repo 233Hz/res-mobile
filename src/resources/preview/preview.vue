@@ -5,6 +5,8 @@ import { collectResourceApi, getResourceByIdApi } from '@/api/resource'
 import { formatDate } from '@/utils/util'
 import type { Resource } from 'types/resource'
 import createPopup from '@/utils/popup'
+import { Base64 } from 'js-base64'
+import { resUrl } from '@/api/file'
 
 const data = ref<Resource>()
 
@@ -24,7 +26,56 @@ const handleCollect = () => {
     }
   })
 }
-const handleDownload = () => {}
+
+const previewUrl = (url: string) =>
+  `${import.meta.env.VITE_PREVIEW_URL}?url=${encodeURIComponent(
+    Base64.encode(resUrl(`/${url}`))
+  )}`
+
+let isDownload = false
+const handleDownload = () => {
+  if (data.value?.oid) {
+    if (!isDownload) {
+      isDownload = true
+      uni.downloadFile({
+        url: '/download/download/' + data.value.oid,
+        success: (res) => {
+          if (res.statusCode === 200) {
+            console.log('res', res)
+            uni.saveFile({
+              tempFilePath: res.tempFilePath,
+              success: (data) => {
+                uni.showToast({
+                  icon: 'none',
+                  mask: true,
+                  title: '文件已保存' + data.savedFilePath,
+                  duration: 3000
+                })
+                console.log('data', data)
+
+                setTimeout(() => {
+                  isDownload = false
+                  uni.openDocument({
+                    filePath: data.savedFilePath,
+                    success: () => {}
+                  })
+                }, 3000)
+              }
+            })
+          }
+        },
+        fail: () => {
+          isDownload = false
+          uni.showToast({
+            icon: 'none',
+            mask: true,
+            title: '下载失败'
+          })
+        }
+      })
+    }
+  }
+}
 
 onLoad(async (option) => {
   if (option?.id) {
@@ -38,7 +89,10 @@ onLoad(async (option) => {
 <template>
   <view class="viewport">
     <view class="preview">
-      <iframe class="preview-content" :src="data?.resPath"> </iframe>
+      <iframe
+        class="preview-content"
+        :src="data?.resPath && previewUrl(data.resPath)"
+      />
     </view>
     <view class="resources-info">
       <view class="info-name_view">

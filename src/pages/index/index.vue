@@ -10,8 +10,18 @@ import HotList from './components/HotList.vue'
 import NotifyList from './components/NotifyList.vue'
 import FilterDrawer from './components/FilterDrawer.vue'
 
-const { bannerList, columnList, categoryList, newsList, hotList, notifyList } =
-  useHome()
+const navbarRef = ref<InstanceType<typeof CustomNavbar>>()
+
+const {
+  bannerList,
+  columnList,
+  categoryList,
+  newsList,
+  hotList,
+  notifyList,
+  handleSearch,
+  handleRegister
+} = useHome(navbarRef)
 
 const activeTabIndex = ref(0)
 const tabChangeHandler = (index: number) => {
@@ -30,7 +40,11 @@ const filterRef = ref<InstanceType<typeof FilterDrawer>>()
 <template>
   <view class="viewport">
     <!-- 导航栏 -->
-    <CustomNavbar />
+    <CustomNavbar
+      ref="navbarRef"
+      @on-search="handleSearch"
+      @on-register="handleRegister"
+    />
     <!-- 滚动区域 -->
     <scroll-view scroll-y class="scroll-view">
       <view class="wrap">

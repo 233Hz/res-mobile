@@ -1,16 +1,23 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
+import { useRouter } from 'uni-mini-router'
+import { useResourceStoreHook } from '@/store/modules/resource'
 import { allLinkApi } from '@/api/links'
 import { resourceHotOrderApi, resourceNewOrderApi } from '@/api/resource'
 import { allCategoryApi } from '@/api/category'
 import { columnTreeApi } from '@/api/column'
+import { notifyForHomeApi } from '@/api/notify'
 import type { Resource } from 'types/resource'
 import type { BannerItem, ColumnItem } from 'types/home'
 import type { Category } from 'types/category'
 import type { Notify } from 'types/notify'
-import { notifyForHomeApi } from '@/api/notify'
+import type CustomNavbar from './components/CustomNavbar.vue'
 
-export const useHome = () => {
+export const useHome = (
+  navbarRef: Ref<InstanceType<typeof CustomNavbar> | undefined>
+) => {
+  const router = useRouter()
+  const resourceStore = useResourceStoreHook()
   const searchForm = ref({
     order: void 0
   })
@@ -57,6 +64,14 @@ export const useHome = () => {
     const { data } = await notifyForHomeApi()
     notifyList.value = data
   }
+  // 搜索
+  const handleSearch = (value: string | undefined) => {
+    resourceStore.setSearch({ key: value })
+    navbarRef.value?.clearSearch()
+    router.pushTab({ name: 'resCenter' })
+  }
+  // 注册
+  const handleRegister = () => router.push({ name: 'register' })
 
   onLoad(async () => {
     await Promise.all([
@@ -75,6 +90,8 @@ export const useHome = () => {
     categoryList,
     newsList,
     hotList,
-    notifyList
+    notifyList,
+    handleSearch,
+    handleRegister
   }
 }

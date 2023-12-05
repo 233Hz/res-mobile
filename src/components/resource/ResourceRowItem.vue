@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { resUrl } from '@/api/file'
 import type { Resource } from 'types/resource'
 import { useRouter } from 'uni-mini-router'
 
@@ -16,7 +17,11 @@ const handleTap = () => {
 
 <template>
   <view class="res-item" @tap="handleTap">
-    <image :src="item.resCover" mode="scaleToFill" class="res-item__image" />
+    <image
+      :src="resUrl(`/${item.resCover}`)"
+      mode="scaleToFill"
+      class="res-item__image"
+    />
     <view class="res-item__content">
       <view class="title">
         <text v-if="item.sortName" class="title__tag">

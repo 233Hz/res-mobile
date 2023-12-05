@@ -2,14 +2,10 @@
 import { useResources } from './hooks'
 import CustomNavbar from './components/CustomNavbar.vue'
 import IndexPanel from './components/IndexPanel.vue'
+import { resUrl } from '@/api/file'
 
-const {
-  loading,
-  searchForm,
-  resourceList,
-  handleInputSearch,
-  handleScrollToLower
-} = useResources()
+const { loading, resourceList, handleInputSearch, handleScrollToLower } =
+  useResources()
 </script>
 
 <template>
@@ -21,7 +17,7 @@ const {
       class="scroll-view"
       @scrolltolower="handleScrollToLower"
     >
-      <IndexPanel v-model="searchForm" />
+      <IndexPanel />
       <GlEmpty v-show="!resourceList.length" text="没有符合条件的资源" />
       <view class="content">
         <view class="item" v-for="item in resourceList" :key="item.oid">
@@ -30,7 +26,11 @@ const {
             hover-class="none"
           >
             <view class="cover">
-              <image :src="item.resCover" mode="scaleToFill" class="image" />
+              <image
+                :src="resUrl(`/${item.resCover}`)"
+                mode="scaleToFill"
+                class="image"
+              />
               <text class="icon-view">
                 <span>{{ item.viewNum }}</span>
               </text>

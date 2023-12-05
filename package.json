@@ -60,6 +60,7 @@
     "@dcloudio/uni-ui": "^1.4.28",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
+    "js-base64": "^3.7.5",
     "pinia": "^2.0.36",
     "pinia-plugin-persistedstate": "^3.2.0",
     "uni-mini-router": "^0.1.5",

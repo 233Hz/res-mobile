@@ -51,8 +51,7 @@ page {
     flex: 1;
     overflow: hidden;
 
-    .loading,
-    .no-more {
+    .loading {
       height: 60rpx;
       line-height: 60rpx;
       width: 100%;

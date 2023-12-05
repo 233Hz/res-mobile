@@ -53,6 +53,9 @@ dependencies:
   '@wangeditor/editor-for-vue':
     specifier: ^5.1.12
     version: registry.npmmirror.com/@wangeditor/editor-for-vue@5.1.12(@wangeditor/editor@5.1.23)(vue@3.2.45)
+  js-base64:
+    specifier: ^3.7.5
+    version: registry.npmmirror.com/js-base64@3.7.5
   pinia:
     specifier: ^2.0.36
     version: registry.npmmirror.com/pinia@2.0.36(typescript@4.9.4)(vue@3.2.45)
@@ -8415,6 +8418,12 @@ packages:
     resolution: {integrity: sha512-9IXdWudL61npZjvLuVe/ktHiA41iE8qFyLB+4VDTblEsWBzeg8WQTlktdUK4CdncUqtUgUg0bbOmTE2bKBKaBQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/jpeg-js/-/jpeg-js-0.3.7.tgz}
     name: jpeg-js
     version: 0.3.7
+    dev: false
+
+  registry.npmmirror.com/js-base64@3.7.5:
+    resolution: {integrity: sha512-3MEt5DTINKqfScXKfJFrRbxkrnk2AxPWGBL/ycjz4dK8iqiSJ06UxD8jh8xuh6p10TX4t2+7FsBYVxxQbMg+qA==, tarball: https://registry.npmmirror.com/js-base64/-/js-base64-3.7.5.tgz}
+    name: js-base64
+    version: 3.7.5
     dev: false
 
   registry.npmmirror.com/js-tokens@4.0.0:

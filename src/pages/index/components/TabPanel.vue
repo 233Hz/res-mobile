@@ -99,7 +99,7 @@ const emit = defineEmits<{
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #4fb869;
+        background-color: var(--system-color);
         border-radius: 20px;
       }
     }

@@ -26,7 +26,7 @@ export default defineConfig(() => {
       port: 9494,
       proxy: {
         '/api': {
-          target: 'http://localhost:9000/xc_api',
+          target: 'http://192.168.0.100:9000/xc_api',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }

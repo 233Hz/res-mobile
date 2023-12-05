@@ -17,3 +17,8 @@ export const uploadFileProMaxUrl = '/resourceData/uploadFile'
  * 图片上传
  */
 export const uploadPictureUrl = '/upload/uploadPic'
+
+/**
+ * 获取完整的资源url
+ */
+export const resUrl = (url: string) => import.meta.env.VITE_RES_URL + url

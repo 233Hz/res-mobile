@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { resUrl } from '@/api/file'
 import type { Resource } from 'types/resource'
 
 interface Props {
@@ -21,7 +22,7 @@ withDefaults(defineProps<Props>(), {
           style="display: flex; gap: 20rpx"
         >
           <image
-            :src="item.resCover"
+            :src="resUrl(`/${item.resCover}`)"
             mode="scaleToFill"
             class="hot__item__image"
           />

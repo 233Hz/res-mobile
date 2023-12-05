@@ -41,9 +41,19 @@ export const useLogin = () => {
     }
   }
 
+  const handleRegister = () => {
+    router.push({ name: 'register' })
+  }
+
+  const handleNotLogin = () => {
+    router.pushTab({ name: 'home' })
+  }
+
   return {
     loading,
     form,
-    handleLogin
+    handleLogin,
+    handleRegister,
+    handleNotLogin
   }
 }

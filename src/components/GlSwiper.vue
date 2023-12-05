@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { resUrl } from '@/api/file'
+import { useRouter } from 'uni-mini-router'
 import { useResourceStoreHook } from '@/store/modules/resource'
 import type { BannerItem } from 'types/home'
-import { useRouter } from 'uni-mini-router'
 
 interface Props {
   indicatorDots?: boolean
@@ -20,13 +21,25 @@ withDefaults(defineProps<Props>(), {
 })
 
 const router = useRouter()
+const resourceStore = useResourceStoreHook()
 const handleTap = (link: string) => {
-  let params: Record<string, string> = {}
-  link.split(',').forEach((item, index) => {
-    Number(item) && (params[`cid${index + 1}`] = item)
-  })
-  useResourceStoreHook().SET_QUERY(params)
-  router.pushTab({ name: 'recCenter' })
+  if (link && link.length) {
+    const index = link.indexOf('?')
+    if (index !== -1) {
+      const queryStr = link.substring(index + 1)
+      const params = new URLSearchParams(queryStr)
+      const nid = params.get('nid')
+      const snid = params.get('snid')
+      const tnid = params.get('tnid')
+      console.log(nid, snid, tnid)
+      resourceStore.setSearch({
+        navId: nid ? +nid : void 0,
+        secondNavId: snid ? +snid : void 0,
+        threeNavId: tnid ? +tnid : void 0
+      })
+    }
+  }
+  router.pushTab({ name: 'resCenter' })
 }
 </script>
 
@@ -45,7 +58,11 @@ const handleTap = (link: string) => {
       :key="item.id"
       @tap="handleTap(item.hrefUrl)"
     >
-      <image mode="widthFix" :src="item.imgUrl" class="image" />
+      <image
+        mode="scaleToFill"
+        :src="resUrl(`/${item.imgUrl}`)"
+        class="image"
+      />
     </swiper-item>
   </swiper>
 </template>

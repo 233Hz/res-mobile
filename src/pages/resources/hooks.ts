@@ -1,19 +1,15 @@
 import { computed, ref, watch } from 'vue'
-import { onLoad, onShow } from '@dcloudio/uni-app'
+import { onLoad } from '@dcloudio/uni-app'
 import { pageResourceApi } from '@/api/resource'
-import type { Resource } from 'types/resource'
 import { useResourceStoreHook } from '@/store/modules/resource'
+import { columnTreeApi } from '@/api/column'
+import { convertNode } from '@/utils/tree'
+import { allCategoryApi } from '@/api/category'
+import type { Resource } from 'types/resource'
 
 export const useResources = () => {
+  const resourceStore = useResourceStoreHook()
   const loading = ref(false)
-  const searchForm = ref<any>({
-    key: void 0,
-    order: 'v',
-    navId: void 0,
-    secondNavId: void 0,
-    threeNavId: void 0,
-    sortId: void 0
-  })
   const pagination = ref({
     total: 0,
     current: 1,
@@ -33,7 +29,7 @@ export const useResources = () => {
       } = await pageResourceApi({
         current: pagination.value.current,
         size: pagination.value.size,
-        ...searchForm.value
+        ...resourceStore.search
       })
       pagination.value.total = total
       resourceList.value = records
@@ -44,8 +40,26 @@ export const useResources = () => {
     }
   }
 
+  const fetchColumnTree = async () => {
+    const { data } = await columnTreeApi()
+    resourceStore.columnOptions1 = convertNode(data, (item) => ({
+      label: item.title,
+      value: item.id
+    }))
+  }
+
+  const fetchCategoryList = async () => {
+    const { data } = await allCategoryApi()
+    resourceStore.categoryOptions = data.map((item) => ({
+      label: item.sortName as string,
+      value: item.oid
+    }))
+  }
+
   const handleInputSearch = async (value: string) => {
-    searchForm.value.key = value
+    resourceStore.setSearch({
+      key: value
+    })
     await onFeatch()
   }
 
@@ -70,7 +84,7 @@ export const useResources = () => {
   }
 
   watch(
-    () => searchForm.value,
+    () => resourceStore.search,
     async () => {
       await onFeatch()
     },
@@ -80,21 +94,12 @@ export const useResources = () => {
   )
 
   onLoad(async () => {
+    await Promise.all([fetchColumnTree(), fetchCategoryList()])
     await onFeatch()
-  })
-
-  onShow(() => {
-    const { name, cid1, cid2, cid3, tid } = useResourceStoreHook().query
-    searchForm.value.key = name
-    searchForm.value.navId = cid1
-    searchForm.value.secondNavId = cid2
-    searchForm.value.threeNavId = cid3
-    searchForm.value.sortId = tid
   })
 
   return {
     loading,
-    searchForm,
     pagination,
     hasNext,
     resourceList,

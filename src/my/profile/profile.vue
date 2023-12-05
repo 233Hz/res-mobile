@@ -5,142 +5,82 @@ const { form, handleGenderChange, onSubmit } = useProfile()
 </script>
 
 <template>
-  <view class="form">
-    <view class="form-content">
-      <view class="form-item">
-        <text class="label">登录账号</text>
-        <view class="content">
-          <input
-            disabled
-            class="input"
-            type="text"
-            placeholder="请输入登入账号"
-            :value="form.loginName"
-          />
-        </view>
+  <GlForm>
+    <GlFormItem label="登录账号">
+      <input
+        disabled
+        class="input"
+        type="text"
+        placeholder="请输入登入账号"
+        :value="form.loginName"
+      />
+    </GlFormItem>
+    <GlFormItem label="姓名">
+      <input
+        class="input"
+        type="text"
+        placeholder="请输入姓名"
+        v-model="form.userName"
+      />
+    </GlFormItem>
+    <GlFormItem label="性别">
+      <radio-group @change="handleGenderChange">
+        <label class="radio">
+          <radio value="1" :checked="form.sex === 1" color="#009688" />
+          男
+        </label>
+        <label class="radio">
+          <radio value="2" :checked="form.sex === 2" color="#009688" />
+          女
+        </label>
+      </radio-group>
+    </GlFormItem>
+    <GlFormItem label="手机号码">
+      <input
+        class="input"
+        type="text"
+        placeholder="请输入手机号码"
+        v-model="form.mobile"
+      />
+    </GlFormItem>
+    <GlFormItem label="电子邮箱">
+      <input
+        class="input"
+        type="text"
+        placeholder="请输入电子邮箱"
+        v-model="form.email"
+      />
+    </GlFormItem>
+    <GlFormItem label="身份证号">
+      <input
+        class="input"
+        type="text"
+        placeholder="请输入身份证号"
+        v-model="form.idCard"
+      />
+    </GlFormItem>
+    <GlFormItem label="联系地址">
+      <view class="content">
+        <input
+          class="input"
+          type="text"
+          placeholder="请输入联系地址"
+          v-model="form.address"
+        />
       </view>
-      <view class="form-item">
-        <text class="label">姓名</text>
-        <view class="content">
-          <input
-            class="input"
-            type="text"
-            placeholder="请输入姓名"
-            v-model="form.userName"
-          />
-        </view>
-      </view>
-      <view class="form-item">
-        <text class="label">性别</text>
-        <view class="content">
-          <radio-group @change="handleGenderChange">
-            <label class="radio">
-              <radio value="1" :checked="form.sex === 1" color="#009688" />
-              男
-            </label>
-            <label class="radio">
-              <radio value="2" :checked="form.sex === 2" color="#009688" />
-              女
-            </label>
-          </radio-group>
-        </view>
-      </view>
-      <view class="form-item">
-        <text class="label">手机号码</text>
-        <view class="content">
-          <input
-            class="input"
-            type="text"
-            placeholder="请输入手机号码"
-            v-model="form.mobile"
-          />
-        </view>
-      </view>
-      <view class="form-item">
-        <text class="label">电子邮箱</text>
-        <view class="content">
-          <input
-            class="input"
-            type="text"
-            placeholder="请输入电子邮箱"
-            v-model="form.email"
-          />
-        </view>
-      </view>
-      <view class="form-item">
-        <text class="label">身份证号</text>
-        <view class="content">
-          <input
-            class="input"
-            type="text"
-            placeholder="请输入身份证号"
-            v-model="form.idCard"
-          />
-        </view>
-      </view>
-      <view class="form-item">
-        <text class="label">联系地址</text>
-        <view class="content">
-          <input
-            class="input"
-            type="text"
-            placeholder="请输入联系地址"
-            v-model="form.address"
-          />
-        </view>
-      </view>
-    </view>
-    <button class="form-button" @tap="onSubmit">确认修改</button>
-  </view>
+    </GlFormItem>
+    <template #submit>
+      <button class="submit-button" @tap="onSubmit">确认修改</button>
+    </template>
+  </GlForm>
 </template>
 
 <style scoped lang="scss">
-.form {
-  padding: 20rpx;
-  position: relative;
-
-  .form-content {
-    background-color: #fff;
-    padding: 20rpx;
-    border-radius: 12px;
-
-    .form-item {
-      display: flex;
-      gap: 20rpx;
-      border-bottom: #f7f7f7 solid 1px;
-      overflow: hidden;
-      padding: 30rpx 20rpx;
-
-      &:last-child {
-        border: none;
-      }
-
-      .label {
-        width: 160rpx;
-        color: #303133;
-        font-size: 28rpx;
-      }
-
-      .content {
-        flex: 1;
-
-        .radio {
-          margin-right: 20rpx;
-
-          &:last-child {
-            margin-right: 0;
-          }
-        }
-      }
-    }
-  }
-
-  .form-button {
-    margin-top: 20rpx;
-    border-radius: 80rpx;
-    border: none;
-    background-color: var(--system-color);
-    color: #fff;
-  }
+.submit-button {
+  margin-top: 20rpx;
+  border-radius: 80rpx;
+  border: none;
+  background-color: var(--system-color);
+  color: #fff;
 }
 </style>

@@ -119,23 +119,16 @@ page {
             margin-top: 20rpx;
 
             .info {
+              flex: 1;
               font-size: 28rpx;
               color: #909399;
-
-              &__item {
-                margin-right: 10rpx;
-
-                &:last-child {
-                  margin-right: 0;
-                }
-
-                .text {
-                  margin-left: 10rpx;
-                }
-              }
+              display: flex;
+              gap: 20rpx;
+              flex-wrap: wrap;
             }
 
             .button {
+              flex-shrink: 0;
               text {
                 font-size: 28rpx;
                 padding: 10rpx 24rpx;
@@ -148,12 +141,12 @@ page {
               }
 
               .button__edit {
-                border: #007aff solid 1px;
-                color: #007aff;
+                border: #009688 solid 1px;
+                color: #009688;
               }
               .button__delete {
-                border: #f56c6c solid 1px;
-                color: #f56c6c;
+                border: #ff5722 solid 1px;
+                color: #ff5722;
               }
             }
           }

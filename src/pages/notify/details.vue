@@ -84,6 +84,8 @@ page {
 
       &__content {
         margin-top: 20rpx;
+        border-top: #f7f7f7 1px solid;
+        padding-top: 20rpx;
       }
     }
   }

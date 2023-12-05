@@ -5,25 +5,25 @@ const { form, onSubmit } = useDemandPublish()
 </script>
 
 <template>
-  <view>
-    <GlForm>
-      <GlFormItem label="需求标题">
-        <input type="text" placeholder="请输入需求标题" v-model="form.title" />
-      </GlFormItem>
-      <GlFormItem label="需求内容">
-        <GlEditor v-model="form.content" :height="300" />
-      </GlFormItem>
-    </GlForm>
-    <button class="submit" @tap="onSubmit">提交</button>
-  </view>
+  <GlForm>
+    <GlFormItem label="需求标题">
+      <input type="text" placeholder="请输入需求标题" v-model="form.title" />
+    </GlFormItem>
+    <GlFormItem label="需求内容">
+      <GlEditor v-model="form.content" :height="300" />
+    </GlFormItem>
+    <template #submit>
+      <button class="submit-button" @tap="onSubmit">提交</button>
+    </template>
+  </GlForm>
 </template>
 
 <style scoped lang="scss">
-.submit {
-  margin: 20rpx;
+.submit-button {
+  margin-top: 20rpx;
   border-radius: 80rpx;
   border: none;
-  background-color: #007aff;
+  background-color: var(--system-color);
   color: #fff;
 }
 </style>

@@ -8,6 +8,11 @@ page {
     'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 
+text,
+view {
+  word-break: break-all;
+}
+
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;

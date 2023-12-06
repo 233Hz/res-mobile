@@ -2,13 +2,16 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { collectResourceApi, getResourceByIdApi } from '@/api/resource'
-import { formatDate } from '@/utils/util'
 import type { Resource } from 'types/resource'
 import createPopup from '@/utils/popup'
 import { Base64 } from 'js-base64'
 import { resUrl } from '@/api/file'
 
 const data = ref<Resource>()
+
+const handleIframeLoad = () => {
+  console.log('handleIframeLoad')
+}
 
 const handleCollect = () => {
   createPopup({
@@ -81,44 +84,49 @@ onLoad(async (option) => {
   if (option?.id) {
     const { data: res } = await getResourceByIdApi(Number(option.id))
     data.value = res
-    console.log(data.value)
   }
 })
 </script>
 
 <template>
-  <view class="viewport">
-    <view class="preview">
+  <view class="container">
+    <view class="res-preview-box">
       <iframe
-        class="preview-content"
+        class="iframe"
         :src="data?.resPath && previewUrl(data.resPath)"
+        @load="handleIframeLoad"
       />
     </view>
-    <view class="resources-info">
-      <view class="info-name_view">
+    <view class="res-info-box">
+      <view class="res-info-title">
         <text class="name">{{ data?.resName }}</text>
-        <text class="icon-view">{{ data?.viewNum || 0 }}</text>
       </view>
-      <view class="info-category_unit">
-        <text v-if="data?.sortName" class="category-tag">
+      <view class="res-info-user-view">
+        <text class="user">
+          <text class="icon-user" />
+          <text class="text">{{ data?.createUserName || '无' }}</text>
+        </text>
+        <text class="view">
+          <text class="icon-view" />
+          <text class="text">{{ data?.viewNum || 0 }}</text>
+        </text>
+      </view>
+      <view class="res-info-tags">
+        <text v-if="data?.sortName" class="category">
           {{ data?.sortName }}
         </text>
-        <text v-if="data?.navName" class="unit">
+        <text v-if="data?.navName" class="column">
           {{ data?.navName }}
         </text>
       </view>
-      <view class="info-publish_btn">
-        <view class="publish">
-          <text class="issuer">{{ data?.createUserName }}</text>
+      <view class="res-info-footer">
+        <view class="footer-left">
           <text class="time">
-            发布于:
-            {{
-              data?.createTime &&
-              formatDate(data.createTime.toString(), 'YYYY-MM-DD')
-            }}
+            <text class="icon-time" />
+            <text class="text">{{ data?.createTime || '无' }}</text>
           </text>
         </view>
-        <view class="btn">
+        <view class="footer-right">
           <text class="icon-heart" @tap="handleCollect">
             {{ data?.collectId ? '已收藏' : '收藏' }}
           </text>
@@ -137,48 +145,59 @@ page {
 </style>
 
 <style scoped lang="scss">
-.viewport {
+.container {
   height: 100%;
   display: flex;
   flex-direction: column;
 
-  .preview {
+  .res-preview-box {
     flex: 1;
     height: 100%;
     overflow: hidden;
 
-    &-content {
+    .iframe {
       width: 100%;
       height: 100%;
     }
   }
 
-  .resources-info {
+  .res-info-box {
+    flex-shrink: 0;
     padding: 20rpx;
     background-color: #fff;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 
-    .info-name_view {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
+    .res-info-title {
       .name {
+        width: 100%;
         font-size: 36rpx;
         font-weight: bold;
       }
+    }
 
-      .icon-view {
-        font-size: 30rpx;
-        color: #8d8d8d;
+    .res-info-user-view {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .user,
+      .view {
+        margin-top: 20rpx;
+        font-size: 32rpx;
+        color: #888888;
+        .text {
+          margin-left: 10rpx;
+        }
       }
     }
 
-    .info-category_unit {
-      margin-top: 20rpx;
+    .res-info-tags {
+      margin-top: 10rpx;
       display: flex;
-      justify-content: space-between;
+      gap: 20rpx;
+      flex-wrap: wrap;
 
-      .category-tag {
+      .category {
         padding: 5rpx 10rpx;
         font-size: 24rpx;
         color: #5fb878;
@@ -186,7 +205,7 @@ page {
         font-weight: 400;
       }
 
-      .unit {
+      .column {
         background-color: #f7f7f7;
         color: #888888;
         padding: 4px 8px;
@@ -194,25 +213,24 @@ page {
       }
     }
 
-    .info-publish_btn {
+    .res-info-footer {
       display: flex;
       justify-content: space-between;
-      margin-top: 30rpx;
+      align-items: center;
+      margin-top: 20rpx;
 
-      .publish {
-        .issuer {
-          font-size: 28rpx;
-          color: #8d8d8d;
-        }
-
+      .footer-left {
         .time {
-          margin-left: 20rpx;
-          font-size: 24rpx;
-          color: #8d8d8d;
+          font-size: 28rpx;
+          color: #888888;
+
+          .text {
+            margin-left: 10rpx;
+          }
         }
       }
 
-      .btn {
+      .footer-right {
         display: flex;
         justify-content: flex-end;
         align-items: center;

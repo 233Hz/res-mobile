@@ -126,6 +126,16 @@ export const pageResourceForDownApi = (params?: BasePage) =>
   })
 
 /**
+ * 收藏记录 分页
+ */
+export const pageResourceForCollectApi = (params?: BasePage) =>
+  request<PageResult<Resource>>({
+    url: '/userCollect/listByPage',
+    method: 'GET',
+    data: params
+  })
+
+/**
  * 收藏资源
  */
 export const collectResourceApi = (data: CollectResourceParam) =>

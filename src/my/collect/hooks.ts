@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { collectResourceApi, pageResourceForDownApi } from '@/api/resource'
+import { collectResourceApi, pageResourceForCollectApi } from '@/api/resource'
 import type { Resource } from 'types/resource'
 
 export const useResCollect = () => {
@@ -20,7 +20,7 @@ export const useResCollect = () => {
     try {
       const {
         data: { total, records }
-      } = await pageResourceForDownApi({
+      } = await pageResourceForCollectApi({
         current: pagination.value.current,
         size: pagination.value.size
       })
@@ -49,7 +49,7 @@ export const useResCollect = () => {
       try {
         const {
           data: { records }
-        } = await pageResourceForDownApi({
+        } = await pageResourceForCollectApi({
           current: pagination.value.current,
           size: pagination.value.size
         })

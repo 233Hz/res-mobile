@@ -58,6 +58,9 @@ export const useResourceStore = defineStore('resource', () => {
   }
 
   const setSearch = (searchForm: SearchForm, merge = false) => {
+    if (!searchForm.order) {
+      searchForm.order = 'v'
+    }
     if (searchForm.navId) {
       columnOptions2.value =
         columnOptions1.value.find((item) => item.value === searchForm.navId)

@@ -65,3 +65,52 @@ export const request = <T>(
     })
   })
 }
+
+export const download = async (
+  options: UniApp.RequestOptions,
+  fileName?: string
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      ...options,
+      responseType: 'blod',
+      success(response: UniApp.RequestSuccessCallbackResult) {
+        // 提取文件名
+        const _fileName =
+          fileName ||
+          response.header['content-disposition'].match(/filename=(.*)/)[1]
+        // 将二进制流转为blob
+        const blob = new Blob([response.data as ArrayBuffer], {
+          type: 'application/octet-stream'
+        })
+
+        // 创建新的URL并指向File对象或者Blob对象的地址
+        const blobURL = window.URL.createObjectURL(blob)
+        // 创建a标签，用于跳转至下载链接
+        const tempLink = document.createElement('a')
+        tempLink.style.display = 'none'
+        tempLink.href = blobURL
+        tempLink.setAttribute('download', decodeURI(_fileName))
+        // 兼容：某些浏览器不支持HTML5的download属性
+        if (typeof tempLink.download === 'undefined') {
+          tempLink.setAttribute('target', '_blank')
+        }
+        // 挂载a标签
+        document.body.appendChild(tempLink)
+        tempLink.click()
+        document.body.removeChild(tempLink)
+        // 释放blob URL地址
+        window.URL.revokeObjectURL(blobURL)
+        resolve()
+      },
+      // 请求失败
+      fail() {
+        uni.showToast({
+          title: '下载失败',
+          icon: 'none'
+        })
+        reject()
+      }
+    })
+  })
+}

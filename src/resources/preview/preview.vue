@@ -5,7 +5,7 @@ import { collectResourceApi, getResourceByIdApi } from '@/api/resource'
 import type { Resource } from 'types/resource'
 import createPopup from '@/utils/popup'
 import { Base64 } from 'js-base64'
-import { resUrl } from '@/api/file'
+import { downloadRes, resUrl } from '@/api/file'
 
 const data = ref<Resource>()
 
@@ -35,49 +35,68 @@ const previewUrl = (url: string) =>
     Base64.encode(resUrl(`/${url}`))
   )}`
 
-let isDownload = false
-const handleDownload = () => {
-  if (data.value?.oid) {
-    if (!isDownload) {
-      isDownload = true
-      uni.downloadFile({
-        url: '/download/download/' + data.value.oid,
-        success: (res) => {
-          if (res.statusCode === 200) {
-            console.log('res', res)
-            uni.saveFile({
-              tempFilePath: res.tempFilePath,
-              success: (data) => {
-                uni.showToast({
-                  icon: 'none',
-                  mask: true,
-                  title: '文件已保存' + data.savedFilePath,
-                  duration: 3000
-                })
-                console.log('data', data)
-
-                setTimeout(() => {
-                  isDownload = false
-                  uni.openDocument({
-                    filePath: data.savedFilePath,
-                    success: () => {}
-                  })
-                }, 3000)
-              }
-            })
-          }
-        },
-        fail: () => {
-          isDownload = false
-          uni.showToast({
-            icon: 'none',
-            mask: true,
-            title: '下载失败'
-          })
-        }
+const handleDownload = async () => {
+  if (data.value) {
+    uni.showLoading({
+      title: '下载中',
+      mask: true
+    })
+    try {
+      await downloadRes(data.value.oid)
+      uni.showToast({
+        icon: 'success',
+        title: '下载成功'
       })
+    } catch (error) {
+      /* empty */
+    } finally {
+      uni.hideLoading()
     }
   }
+  // 移动端下载
+  // if (data.value?.oid) {
+  //   if (!isDownload) {
+  //     isDownload = true
+  //     uni.downloadFile({
+  //       url: downloadUrl(`/download/download/${data.value.oid}`),
+  //       success: (res) => {
+  //         if (res.statusCode === 200) {
+  //           console.log('res', res)
+  //           uni.hideLoading()
+  //           uni.saveFile({
+  //             tempFilePath: res.tempFilePath,
+  //             success: (data) => {
+  //               uni.showToast({
+  //                 icon: 'none',
+  //                 mask: true,
+  //                 title: '文件已保存' + data.savedFilePath,
+  //                 duration: 3000
+  //               })
+  //               console.log('data', data)
+
+  //               setTimeout(() => {
+  //                 isDownload = false
+  //                 uni.openDocument({
+  //                   filePath: data.savedFilePath,
+  //                   success: () => {}
+  //                 })
+  //               }, 3000)
+  //             }
+  //           })
+  //         }
+  //       },
+  //       fail: () => {
+  //         isDownload = false
+  //         uni.hideLoading()
+  //         uni.showToast({
+  //           icon: 'none',
+  //           mask: true,
+  //           title: '下载失败'
+  //         })
+  //       }
+  //     })
+  //   }
+  // }
 }
 
 onLoad(async (option) => {

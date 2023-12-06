@@ -1,3 +1,5 @@
+import { download } from '@/utils/request'
+
 /**
  * 文件上传 需传mark
  */
@@ -22,3 +24,14 @@ export const uploadPictureUrl = '/upload/uploadPic'
  * 获取完整的资源url
  */
 export const resUrl = (url: string) => import.meta.env.VITE_RES_URL + url
+
+/**
+ * 获取下载资源路径
+ */
+export const downloadUrl = (url: string) => import.meta.env.VITE_BASE_API + url
+
+export const downloadRes = (id: number) =>
+  download({
+    url: '/download/download/' + id,
+    method: 'GET'
+  })

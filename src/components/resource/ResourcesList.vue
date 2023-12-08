@@ -90,14 +90,14 @@ const handleRefuse = (id: number) => emit('on-refuse', id)
         <text
           v-show="type === 'audit' && [2, 3].includes(item.state)"
           class="pass"
-          @tap.stop="handlePass(item.oid)"
+          @tap.stop="handlePass(item.auditRecordId)"
         >
           通过
         </text>
         <text
           v-show="type === 'audit' && [2, 3].includes(item.state)"
           class="refuse"
-          @tap.stop="handleRefuse(item.oid)"
+          @tap.stop="handleRefuse(item.auditRecordId)"
         >
           拒绝
         </text>

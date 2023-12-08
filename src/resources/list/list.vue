@@ -7,6 +7,7 @@ const {
   loading,
   dataList,
   handleSearch,
+  handleTagChange,
   handleEdit,
   handleDelete,
   handleRevoke,
@@ -16,7 +17,7 @@ const {
 
 <template>
   <view class="viewport">
-    <Search @on-search="handleSearch" />
+    <Search @on-search="handleSearch" @tag-change="handleTagChange" />
     <scroll-view
       scroll-y
       class="scroll-view"
@@ -24,6 +25,7 @@ const {
     >
       <GlEmpty v-show="!dataList.length" text="没有符合条件的资源" />
       <ResourcesList
+        type="list"
         :list="dataList"
         @on-update="handleEdit"
         @on-delete="handleDelete"

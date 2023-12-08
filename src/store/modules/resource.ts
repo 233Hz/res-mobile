@@ -20,11 +20,11 @@ export interface LabelValue {
 export interface LabelValueTree extends LabelValue {
   children?: LabelValueTree[]
 }
-type SearchForm = Partial<Search>
+type SearchData = Partial<Search>
 
 export const useResourceStore = defineStore('resource', () => {
   const isInit = ref(false)
-  const search = ref<SearchForm>({
+  const search = ref<SearchData>({
     key: void 0,
     order: 'v',
     navId: void 0,
@@ -57,23 +57,37 @@ export const useResourceStore = defineStore('resource', () => {
     isInit.value = true
   }
 
-  const setSearch = (searchForm: SearchForm, merge = false) => {
-    if (!searchForm.order) {
-      searchForm.order = 'v'
+  const setSearch = (searchData: SearchData, merge = false) => {
+    if (!merge) {
+      if (!searchData.order) searchData.order = 'v'
     }
-    if (searchForm.navId) {
+    const newSearch = merge
+      ? Object.assign(search.value, searchData)
+      : searchData
+    console.log('newSearch', newSearch)
+
+    if (newSearch.navId) {
       columnOptions2.value =
-        columnOptions1.value.find((item) => item.value === searchForm.navId)
+        columnOptions1.value.find((item) => item.value === newSearch.navId)
           ?.children || []
       columnOptions3.value = []
+    } else {
+      columnOptions2.value = []
+      columnOptions3.value = []
+      newSearch.secondNavId = void 0
+      newSearch.threeNavId = void 0
     }
-    if (searchForm.secondNavId) {
+    if (newSearch.secondNavId) {
       columnOptions3.value =
         columnOptions2.value.find(
-          (item) => item.value === searchForm.secondNavId
+          (item) => item.value === newSearch.secondNavId
         )?.children || []
+    } else {
+      columnOptions3.value = []
+      newSearch.threeNavId = void 0
     }
-    search.value = merge ? Object.assign(search.value, searchForm) : searchForm
+    search.value = newSearch
+    console.log(search.value)
   }
 
   const resetSearch = () => {

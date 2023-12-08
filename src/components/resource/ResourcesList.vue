@@ -3,6 +3,7 @@ import { formatFileSize, formatDate } from '@/utils/util'
 import type { Resource } from 'types/resource'
 
 interface Props {
+  type: 'list' | 'audit'
   list?: Resource[]
 }
 interface EmitEvent {
@@ -30,7 +31,7 @@ const handleRefuse = (id: number) => emit('on-refuse', id)
   <view class="list">
     <view class="item" v-for="item in list" :key="item.oid">
       <navigator
-        :url="`/resources/preview/preview?id=${item.oid}`"
+        :url="`/resources/preview/preview-auth?id=${item.oid}`"
         hover-class="none"
       >
         <view class="name">
@@ -66,34 +67,35 @@ const handleRefuse = (id: number) => emit('on-refuse', id)
       </navigator>
       <view class="btn">
         <text
-          v-show="item.state === 4"
+          v-show="type === 'list' && item.state === 4"
           class="edit"
           @tap.stop="handleEdit(item.oid)"
-          >编辑</text
         >
+          编辑
+        </text>
         <text
-          v-show="item.state === 4"
+          v-show="type === 'list' && item.state === 4"
           class="delete"
           @tap.stop="handleDelete(item.oid)"
         >
           删除
         </text>
         <text
-          v-show="item.state === 8"
+          v-show="type === 'list' && item.state === 8"
           class="revoke"
           @tap.stop="handleRevoke(item.oid)"
         >
           下架
         </text>
         <text
-          v-show="[2, 3].includes(item.state)"
+          v-show="type === 'audit' && [2, 3].includes(item.state)"
           class="pass"
           @tap.stop="handlePass(item.oid)"
         >
           通过
         </text>
         <text
-          v-show="[2, 3].includes(item.state)"
+          v-show="type === 'audit' && [2, 3].includes(item.state)"
           class="refuse"
           @tap.stop="handleRefuse(item.oid)"
         >

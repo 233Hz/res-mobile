@@ -40,7 +40,7 @@ const { form, handleGenderChange, onSubmit } = useProfile()
         class="input"
         type="text"
         placeholder="请输入手机号码"
-        v-model="form.mobile"
+        v-model="form.phone"
       />
     </GlFormItem>
     <GlFormItem label="电子邮箱">

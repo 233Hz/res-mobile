@@ -23,6 +23,7 @@ const {
     >
       <GlEmpty v-show="!dataList.length" text="暂无您的审核" />
       <ResourcesList
+        type="audit"
         :list="dataList"
         @on-pass="handlePass"
         @on-refuse="handleRefuse"

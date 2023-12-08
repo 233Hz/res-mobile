@@ -3,6 +3,7 @@ import { useResourceStoreHook } from '@/store/modules/resource'
 import { useRouter } from 'uni-mini-router'
 import type { Category } from 'types/category'
 import defaultIcon from '@/static/images/file-image.png'
+import { resUrl } from '@/api/file'
 
 interface Props {
   list: Category[]
@@ -32,7 +33,7 @@ const handleTap = (id: number) => {
           @tap="handleTap(item.oid)"
         >
           <image
-            :src="item.sortPic || defaultIcon"
+            :src="resUrl(`/${item.sortPic}`) || defaultIcon"
             mode="scaleToFill"
             class="tab-item__image"
           />
@@ -76,6 +77,7 @@ const handleTap = (id: number) => {
 
     &__content {
       display: flex;
+      align-items: start;
       gap: 40rpx;
 
       .tab-item {

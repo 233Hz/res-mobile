@@ -2,17 +2,17 @@
 import { useResourceUpload } from './hooks'
 import { formatFileSize } from '@/utils/util'
 import { findLabelForValue, AUTH_OPTION, DOWNLOAD_OPTION } from './utils'
+import { resUrl } from '@/api/file'
 
 const {
   form,
+  linkRes,
   categoryList,
   columnList,
   fileList,
-  columnIndexs,
   handleResAuthChange,
   handleStuDownChange,
   handleSortIdChange,
-  handleNavIdChange,
   handleCoverUpload,
   handleFileUpload,
   onSubmit
@@ -79,40 +79,20 @@ const {
         </picker>
       </GlFormItem>
       <GlFormItem label="所属栏目">
-        <picker
-          v-for="(item, index) in columnList"
-          :key="index"
-          range-key="label"
-          :value="columnIndexs[index]?.index"
-          :range="columnList[index]"
-          @change="(event: any) => handleNavIdChange(event, index)"
+        <uni-data-picker
+          placeholder="请选择所属栏目"
+          popup-title="请选择所属栏目"
+          v-model="form.navId"
+          :localdata="columnList"
         >
-          <view class="picker-item">
-            <text v-show="columnIndexs[index] !== void 0" class="text">
-              {{
-                columnIndexs[index] &&
-                columnIndexs[index]?.value &&
-                findLabelForValue(
-                  columnList[index],
-                  columnIndexs[index]!.value!
-                )
-              }}
-            </text>
-            <text
-              v-show="columnIndexs[index] === void 0"
-              class="placeholder text"
-            >
-              请选择{{ ['一', '二', '三'][index] }}级栏目
-            </text>
-          </view>
-        </picker>
+        </uni-data-picker>
       </GlFormItem>
       <GlFormItem label="封面上传">
         <view class="cover" @tap="handleCoverUpload">
           <image
             mode="aspectFill"
             class="image"
-            :src="form.resCover"
+            :src="resUrl(`/${form.resCover}`)"
             :class="{
               default: !form.resCover
             }"
@@ -120,15 +100,15 @@ const {
           <text class="text">点击上传封面</text>
         </view>
       </GlFormItem>
-      <GlFormItem label="资源上传" v-show="form.linkRes">
+      <GlFormItem label="资源上传" v-show="linkRes">
         <input
-          v-show="form.linkRes === 1"
+          v-show="linkRes === 1"
           class="input"
           type="text"
           placeholder="请输入资源链接地址"
           v-model="form.resPath"
         />
-        <view class="file" v-show="form.linkRes === 2">
+        <view class="file" v-show="linkRes === 2">
           <view class="upload-btn" @tap="handleFileUpload">
             <text class="text">上传文件</text>
           </view>

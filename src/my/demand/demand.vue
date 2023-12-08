@@ -46,7 +46,7 @@ const {
                 </text>
                 <text class="info__item">
                   <text class="icon-view" />
-                  <text class="text">{{ item.viewNum }}</text>
+                  <text class="text">{{ item.viewNum || 0 }}</text>
                 </text>
               </view>
               <view class="button">

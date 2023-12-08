@@ -37,12 +37,6 @@ export const formRules: FormRules<Resource> = {
       message: '请选择资源栏目'
     }
   ],
-  linkRes: [
-    {
-      required: true,
-      message: '请选择资源分类'
-    }
-  ],
   resPath: [
     {
       required: true,

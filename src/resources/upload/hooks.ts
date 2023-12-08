@@ -10,31 +10,17 @@ import {
   type LabelValue
 } from './utils'
 import { convertNode } from '@/utils/tree'
-import { getResourceByIdApi, uploadResourceApi } from '@/api/resource'
+import { getResourceByIdNoAuthApi, uploadResourceApi } from '@/api/resource'
 import { validata } from '@/utils/util'
 import { useRouter } from 'uni-mini-router'
 import createPopup from '@/utils/popup'
-
-interface LableValueTree extends LabelValue {
-  children?: LableValueTree[]
-}
+import { computed } from 'vue'
 
 interface FileItem {
   fileName: string
   fileSize: number
   filePath: string
 }
-
-type ColumnIndexItem = {
-  index: number | undefined
-  value: number | undefined
-}
-type ColumnIndexTupleItem = ColumnIndexItem | undefined
-type ColumnIndexTuple = [
-  ColumnIndexTupleItem,
-  ColumnIndexTupleItem,
-  ColumnIndexTupleItem
-]
 
 export const useResourceUpload = () => {
   const router = useRouter()
@@ -45,13 +31,17 @@ export const useResourceUpload = () => {
     stuDown: void 0,
     sortId: void 0,
     navId: void 0,
-    linkRes: void 0,
     resCover: void 0,
     resPath: void 0,
     resSize: void 0,
     content: void 0
   })
 
+  const linkRes = computed(
+    () =>
+      categoryList.value.find((item) => item.value === form.value.sortId)
+        ?.linkRes
+  )
   const categoryList = ref<LabelValue[]>([])
   const fetchCategoryList = async () => {
     const { data } = await allCategoryApi()
@@ -62,13 +52,11 @@ export const useResourceUpload = () => {
     }))
   }
 
-  const columnList = ref<
-    [LableValueTree[], LableValueTree[], LableValueTree[]]
-  >([[], [], []])
+  const columnList = ref<any[]>([])
   const fetchColumnTreeList = async () => {
     const { data } = await columnTreeApi()
-    columnList.value[0] = convertNode(data, (item) => ({
-      label: item.title,
+    columnList.value = convertNode(data, (item) => ({
+      text: item.title,
       value: item.id
     }))
   }
@@ -90,35 +78,7 @@ export const useResourceUpload = () => {
     const categoryItem =
       categoryList.value[event.detail.value as unknown as number]
     form.value.sortId = categoryItem?.value
-    form.value.linkRes = categoryItem?.linkRes
     console.log(form.value.linkRes)
-  }
-
-  const columnValues = ref<ColumnIndexTuple>([void 0, void 0, void 0])
-  const handleNavIdChange = (event: any, index: number) => {
-    if (columnList.value[index].length) {
-      const valueIndex = event.detail.value
-      const columnItem = columnList.value[index][valueIndex]
-      if (valueIndex !== columnValues.value[index]?.index) {
-        let nextIndex = index + 1
-        while (nextIndex < columnList.value.length) {
-          columnValues.value[nextIndex] = void 0
-          columnList.value[nextIndex] = []
-          nextIndex++
-        }
-        if (index + 1 < columnList.value.length) {
-          columnList.value[index + 1] = columnItem?.children || []
-        }
-      }
-      console.log(valueIndex)
-
-      columnValues.value[index] = {
-        index: valueIndex,
-        value: columnItem?.value as number
-      }
-      columnItem?.value && (form.value.navId = columnItem?.value)
-      console.log(form.value.navId)
-    }
   }
 
   const handleCoverUpload = () => {
@@ -169,15 +129,22 @@ export const useResourceUpload = () => {
   const onSubmit = async () => {
     const { valid, message } = validata(formRules, form.value)
     if (valid) {
-      await uploadResourceApi(form.value)
-      createPopup({
-        type: 'info',
-        cancelText: '继续上传',
-        confirmText: '资源列表',
-        content: '上传成功',
-        onClose: () => resetForm(),
-        onConfirm: () => router.push({ name: 'resList' })
-      })
+      if (!linkRes.value) {
+        uni.showToast({ title: '请选择分类', icon: 'error' })
+      }
+      await uploadResourceApi({ ...form.value, linkRes: linkRes.value })
+      if (form.value.oid) {
+        uni.showToast({ title: '修改成功', icon: 'success' })
+      } else {
+        createPopup({
+          type: 'info',
+          cancelText: '继续上传',
+          confirmText: '资源列表',
+          content: '上传成功',
+          onClose: () => resetForm(),
+          onConfirm: () => router.push({ name: 'resList' })
+        })
+      }
     } else {
       uni.showToast({ title: message, icon: 'error' })
     }
@@ -237,7 +204,7 @@ export const useResourceUpload = () => {
   }
 
   const fetchResInfo = async (id: number) => {
-    const { data } = await getResourceByIdApi(id)
+    const { data } = await getResourceByIdNoAuthApi(id)
     form.value = {
       oid: data.oid,
       resName: data.resName,
@@ -245,7 +212,6 @@ export const useResourceUpload = () => {
       stuDown: data.stuDown,
       sortId: data.sortId,
       navId: data.navId,
-      linkRes: data.linkRes,
       resCover: data.resCover,
       resPath: data.resPath,
       resSize: data.resSize,
@@ -280,14 +246,13 @@ export const useResourceUpload = () => {
 
   return {
     form,
+    linkRes,
     categoryList,
     columnList,
     fileList,
-    columnIndexs: columnValues,
     handleResAuthChange,
     handleStuDownChange,
     handleSortIdChange,
-    handleNavIdChange,
     handleCoverUpload,
     handleFileUpload,
     onSubmit

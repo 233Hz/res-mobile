@@ -65,6 +65,13 @@ export const getResourceByIdApi = (id: number) =>
     method: 'GET'
   })
 
+/** 根据id获取资源信息 (后台预览) */
+export const getResourceByIdNoAuthApi = (id: number) =>
+  request<Resource>({
+    url: '/resourceData/info/' + id,
+    method: 'GET'
+  })
+
 /**
  * 下架资源
  */

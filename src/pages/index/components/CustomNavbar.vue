@@ -32,7 +32,7 @@ defineExpose({ clearSearch })
         >
           <image
             class="image"
-            v-permission="'admin'"
+            v-permission="'ROLE_ADMIN'"
             src="@/static/images/backstage.png"
             mode="scaleToFill"
           />

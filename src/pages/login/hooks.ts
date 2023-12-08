@@ -1,6 +1,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'uni-mini-router'
 import { useUserStoreHook } from '@/store'
+import { hex_md5 } from '@/utils/md5'
+import { A } from '@/utils/constant'
 
 export const useLogin = () => {
   const router = useRouter()
@@ -29,7 +31,7 @@ export const useLogin = () => {
     try {
       await useUserStoreHook().loginByUsername(
         form.value.username,
-        form.value.password
+        hex_md5(form.value.password + A)
       )
       uni.showToast({
         title: '登录成功',

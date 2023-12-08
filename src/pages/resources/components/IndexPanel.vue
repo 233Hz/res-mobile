@@ -26,7 +26,7 @@ const resourceStore = useResourceStoreHook()
         <text
           class="item"
           :class="{ active: resourceStore.search.navId == void 0 }"
-          @tap="resourceStore.search.navId = void 0"
+          @tap="resourceStore.setSearch({ navId: void 0 }, true)"
         >
           全部
         </text>
@@ -35,7 +35,7 @@ const resourceStore = useResourceStoreHook()
           :key="item.value"
           class="item"
           :class="{ active: resourceStore.search.navId == item.value }"
-          @tap="resourceStore.search.navId = item.value as number"
+          @tap="resourceStore.setSearch({ navId: item.value as number }, true)"
         >
           {{ item.label }}
         </text>
@@ -47,7 +47,7 @@ const resourceStore = useResourceStoreHook()
         <text
           class="item"
           :class="{ active: resourceStore.search.secondNavId == void 0 }"
-          @tap="resourceStore.search.secondNavId = void 0"
+          @tap="resourceStore.setSearch({ secondNavId: void 0 }, true)"
         >
           全部
         </text>
@@ -56,7 +56,9 @@ const resourceStore = useResourceStoreHook()
           :key="item.value"
           class="item"
           :class="{ active: resourceStore.search.secondNavId == item.value }"
-          @tap="resourceStore.search.secondNavId = item.value as number"
+          @tap="
+            resourceStore.setSearch({ secondNavId: item.value as number }, true)
+          "
         >
           {{ item.label }}
         </text>
@@ -68,7 +70,7 @@ const resourceStore = useResourceStoreHook()
         <text
           class="item"
           :class="{ active: resourceStore.search.threeNavId == void 0 }"
-          @tap="resourceStore.search.threeNavId = void 0"
+          @tap="resourceStore.setSearch({ threeNavId: void 0 }, true)"
         >
           全部
         </text>
@@ -77,7 +79,9 @@ const resourceStore = useResourceStoreHook()
           :key="item.value"
           class="item"
           :class="{ active: resourceStore.search.threeNavId == item.value }"
-          @tap="resourceStore.search.threeNavId = item.value as number"
+          @tap="
+            resourceStore.setSearch({ threeNavId: item.value as number }, true)
+          "
         >
           {{ item.label }}
         </text>

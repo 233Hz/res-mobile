@@ -57,6 +57,11 @@ export const useResourceList = () => {
     onFetch()
   }
 
+  const handleTagChange = (value: number | undefined) => {
+    searchForm.value.state = value
+    onFetch()
+  }
+
   const handleEdit = (id: number) => {
     console.log(id)
     router.push({ name: 'resUpload', params: { id: id + '' } })
@@ -115,6 +120,7 @@ export const useResourceList = () => {
     dataList,
     hasNext,
     handleSearch,
+    handleTagChange,
     handleEdit,
     handleDelete,
     handleRevoke,

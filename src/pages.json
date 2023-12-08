@@ -137,7 +137,7 @@
           },
           "meta": {
             "ignoreAuth": false,
-            "roles": ["admin"]
+            "roles": ["ROLE_ADMIN"]
           }
         },
         {
@@ -148,7 +148,7 @@
           },
           "meta": {
             "ignoreAuth": false,
-            "roles": ["admin"]
+            "roles": ["ROLE_ADMIN"]
           }
         },
         {
@@ -159,7 +159,7 @@
           },
           "meta": {
             "ignoreAuth": false,
-            "roles": ["admin"]
+            "roles": ["ROLE_ADMIN"]
           }
         },
         {
@@ -170,7 +170,18 @@
           },
           "meta": {
             "ignoreAuth": false,
-            "roles": ["admin"]
+            "roles": ["ROLE_ADMIN"]
+          }
+        },
+        {
+          "path": "preview/preview-auth",
+          "name": "resPreviewAuth",
+          "style": {
+            "navigationBarTitleText": "资源预览"
+          },
+          "meta": {
+            "ignoreAuth": false,
+            "roles": ["ROLE_ADMIN"]
           }
         },
         {

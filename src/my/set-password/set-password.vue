@@ -30,7 +30,7 @@ const { form, onSubmit } = useSetPassword()
         type="safe-password"
         placeholder="请输入确认密码"
         password
-        v-model="form.npwd"
+        v-model="form.rpwd"
       />
     </GlFormItem>
     <template #submit>

@@ -4,6 +4,7 @@ import type { Search } from './hooks'
 
 interface EmitEvent {
   (e: 'on-search', search: Search): void
+  (e: 'tag-change', tag: number | undefined): void
 }
 
 const states = [
@@ -41,6 +42,10 @@ const search = ref<Search>({
 })
 
 const onSearch = () => emit('on-search', search.value)
+const handleTagChange = (tag: number | undefined) => {
+  search.value.state = tag
+  emit('tag-change', tag)
+}
 </script>
 
 <template>
@@ -66,7 +71,7 @@ const onSearch = () => emit('on-search', search.value)
         v-for="item in states"
         :key="item.value"
         :class="{ active: search.state === item.value }"
-        @tap="() => (search.state = item.value)"
+        @tap="handleTagChange(item.value)"
       >
         {{ item.label }}
       </text>

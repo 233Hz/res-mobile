@@ -9,7 +9,7 @@ export const useProfile = () => {
     loginName: void 0,
     userName: void 0,
     sex: void 0,
-    mobile: void 0,
+    phone: void 0,
     email: void 0,
     idCard: void 0,
     address: void 0
@@ -17,13 +17,13 @@ export const useProfile = () => {
 
   const onFetch = async () => {
     const {
-      data: { oid, loginName, userName, sex, mobile, email, idCard, address }
+      data: { oid, loginName, userName, sex, phone, email, idCard, address }
     } = await getUserInfoApi()
     form.value.oid = oid ?? void 0
     form.value.loginName = loginName ?? void 0
     form.value.userName = userName ?? void 0
     form.value.sex = sex ?? void 0
-    form.value.mobile = mobile ?? void 0
+    form.value.phone = phone ?? void 0
     form.value.email = email ?? void 0
     form.value.idCard = idCard ?? void 0
     form.value.address = address ?? void 0

@@ -35,13 +35,13 @@ export const request = <T>(
       // 请求成功
       success(res) {
         const { code, msg } = res.data as RequestResult<any>
-        if (code === 11012) {
+        if ([11012, 11016].includes(code)) {
           createPopup({
             type: 'info',
             content: '身份信息已过期, 请重新登录',
-            onConfirm: () => {
+            onConfirm: async () => {
               useAuthStoreHook().clearToken()
-              uni.redirectTo({ url: '/pages/login/login' })
+              await uni.redirectTo({ url: '/pages/login/login' })
               location.reload()
             }
           })

@@ -3,7 +3,7 @@ export interface FormItem {
   loginName: string
   userName: string
   sex: number
-  mobile: string
+  phone: string
   email: string
   idCard: string
   address: string

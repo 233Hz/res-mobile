@@ -72,13 +72,18 @@ export const useResourceAudit = () => {
       title: '是否要拒绝该资源',
       placeholder: '请输入拒绝原因',
       onConfirm: async (value) => {
-        await auditPassRefuseApi({
-          idList: [id],
-          auditResult: 2,
-          auditNote: value + ''
-        })
-        uni.showToast({ title: '拒绝成功', icon: 'success' })
-        onFetch()
+        const newValue = value + ''
+        if (!newValue || !newValue.trim()) {
+          uni.showToast({ title: '拒绝原因不能为空', icon: 'error' })
+        } else {
+          await auditPassRefuseApi({
+            idList: [id],
+            auditResult: 2,
+            auditNote: newValue
+          })
+          uni.showToast({ title: '拒绝成功', icon: 'success' })
+          onFetch()
+        }
       }
     })
   }
